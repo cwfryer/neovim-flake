@@ -6,10 +6,10 @@ let
   set = pkgs.neovimBuilder { config = cfg.settings; };
 in
 with lib; {
-  meta.maintainers = [ maintainers.gvolpe ];
+  meta.maintainers = [ maintainers.cfryer ];
 
   options.programs.neovim-ide = {
-    enable = mkEnableOption "NeoVim with LSP enabled for Scala, Haskell, Rust and more.";
+    enable = mkEnableOption "NeoVim with LSP enabled for Haskell, Rust and more.";
 
     settings = mkOption {
       type = types.attrsOf types.anything;
@@ -31,7 +31,6 @@ with lib; {
             dhall = true;
             elm = true;
             haskell = true;
-            scala = true;
             sql = true;
             python = false;
             clang = false;

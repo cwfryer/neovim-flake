@@ -9,277 +9,237 @@
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Nix module docs generator
-    nmd.url = github:gvolpe/nmd;
-    #nmd.url = git+file:///home/gvolpe/workspace/nmd;
-
-    tree-sitter-scala = {
-      url = github:tree-sitter/tree-sitter-scala;
-      flake = false;
-    };
-
-    tree-sitter-typescript = {
-      url = github:tree-sitter/tree-sitter-typescript;
-      flake = false;
-    };
-
-    # Neovim plugins
-
-    # Text objects
-    nvim-surround = {
-      url = github:kylechui/nvim-surround;
-      flake = false;
-    };
-
-    # Copying/Registers
-    nvim-neoclip = {
-      url = github:AckslD/nvim-neoclip.lua;
-      flake = false;
-    };
-
-    # LSP plugins
-    nvim-lspconfig = {
-      url = github:neovim/nvim-lspconfig;
-      flake = false;
-    };
-    nvim-treesitter = {
-      url = github:nvim-treesitter/nvim-treesitter;
-      flake = false;
-    };
-    lspsaga = {
-      url = github:tami5/lspsaga.nvim;
-      flake = false;
-    };
-    lspkind = {
-      url = github:onsails/lspkind-nvim;
-      flake = false;
-    };
-    trouble = {
-      url = github:folke/trouble.nvim;
-      flake = false;
-    };
-    nvim-treesitter-context = {
-      url = github:lewis6991/nvim-treesitter-context;
-      flake = false;
-    };
-    nvim-lightbulb = {
-      url = github:kosayoda/nvim-lightbulb;
-      flake = false;
-    };
-
-    nvim-code-action-menu = {
-      url = github:weilbith/nvim-code-action-menu;
-      flake = false;
-    };
-    lsp-signature = {
-      url = github:ray-x/lsp_signature.nvim;
-      flake = false;
-    };
-    null-ls = {
-      url = github:jose-elias-alvarez/null-ls.nvim;
-      flake = false;
-    };
-    sqls-nvim = {
-      url = github:nanotee/sqls.nvim;
-      flake = false;
-    };
-    rust-tools = {
-      url = github:simrat39/rust-tools.nvim;
-      flake = false;
-    };
-    nvim-metals = {
-      url = github:scalameta/nvim-metals;
-      flake = false;
-    };
-
-    # Folds
-    nvim-ufo = {
-      url = github:kevinhwang91/nvim-ufo;
-      flake = false;
-    };
-
-    promise-async = {
-      url = github:kevinhwang91/promise-async; # required by nvim-ufo
-      flake = false;
-    };
-
-    # Telescope
-    telescope = {
-      url = github:nvim-telescope/telescope.nvim;
-      flake = false;
-    };
-
-    # Filetrees
-    nvim-tree-lua = {
-      url = github:kyazdani42/nvim-tree.lua;
-      flake = false;
-    };
-
-    # Tablines
-    nvim-bufferline = {
-      url = github:akinsho/bufferline.nvim;
-      flake = false;
-    };
-
-    # Statuslines
-    lualine = {
-      url = github:hoob3rt/lualine.nvim;
-      flake = false;
-    };
-
-    # Autocompletes
-    nvim-compe = {
-      url = github:hrsh7th/nvim-compe;
-      flake = false;
-    };
+    #-------------------------------------
+    # Coding Plugins
+    #-------------------------------------
+    lua-snip = {
+			url = github:L3MON4D3/LuaSnip;
+			flake = false;
+		};
+    friendly-snippets = {
+			url = github:rafamadriz/friendly-snippets;
+			flake = false;
+		};
     nvim-cmp = {
-      url = github:hrsh7th/nvim-cmp;
-      flake = false;
-    };
-    cmp-buffer = {
-      url = github:hrsh7th/cmp-buffer;
-      flake = false;
-    };
+			url = github:hrsh7th/nvim-cmp;
+			flake = false;
+		};
     cmp-nvim-lsp = {
-      url = github:hrsh7th/cmp-nvim-lsp;
-      flake = false;
-    };
-    cmp-vsnip = {
-      url = github:hrsh7th/cmp-vsnip;
-      flake = false;
-    };
+			url = github:hrsh7th/cmp-nvim-lsp;
+			flake = false;
+		};
+    cmp-buffer = {
+			url = github:hrsh7th/cmp-buffer;
+			flake = false;
+		};
     cmp-path = {
-      url = github:hrsh7th/cmp-path;
-      flake = false;
-    };
-    cmp-treesitter = {
-      url = github:ray-x/cmp-treesitter;
-      flake = false;
-    };
+			url = github:hrsh7th/cmp-path;
+			flake = false;
+		};
+    cmp-luasnip = {
+			url = github:saadparwaiz1/cmp_luasnip;
+			flake = false;
+		};
+    mini-pairs = {
+			url = github:echasnovski/mini.pairs;
+			flake = false;
+		};
+    mini-surround = {
+			url = github:echasnovski/mini.surround;
+			flake = false;
+		};
+    nvim-ts-commentstring = {
+			url = github:JoosepAlviste/nvim-ts-context-commentstring;
+			flake = false;
+		};
+    mini-comment = {
+			url = github:echasnovski/mini.comment;
+			flake = false;
+		};
+    mini-ai = {
+			url = github:echasnovski/mini.ai;
+			flake = false;
+		};
 
-    # Snippets
-    vim-vsnip = {
-      url = github:hrsh7th/vim-vsnip;
-      flake = false;
-    };
-
-    # Autopairs
-    nvim-autopairs = {
-      url = github:windwp/nvim-autopairs;
-      flake = false;
-    };
-    nvim-ts-autotag = {
-      url = github:windwp/nvim-ts-autotag;
-      flake = false;
-    };
-
-    # Commenting
-    kommentary = {
-      url = github:b3nj5m1n/kommentary;
-      flake = false;
-    };
-    todo-comments = {
-      url = github:folke/todo-comments.nvim;
-      flake = false;
-    };
-
-    # Buffer tools
-    bufdelete-nvim = {
-      url = github:famiu/bufdelete.nvim;
-      flake = false;
-    };
-
-    hop = {
-      url = github:phaazon/hop.nvim;
-      flake = false;
-    };
-
-    # Themes
-    catppuccin = {
-      url = github:catppuccin/nvim;
-      flake = false;
-    };
-
-    nightfox = {
-      url = github:EdenEast/nightfox.nvim;
-      flake = false;
-    };
-
-    onedark = {
-      url = github:navarasu/onedark.nvim;
-      flake = false;
-    };
-
-    rosepine = {
-      url = github:rose-pine/neovim;
-      flake = false;
-    };
-
+    #-------------------------------------
+    # Colorscheme Plugins
+    #-------------------------------------
     tokyonight = {
-      url = github:folke/tokyonight.nvim;
+			url = github:folke/tokyonight.nvim;
+			flake = false;
+		};
+    catppuccin = {
+			url = github:catppuccin/nvim;
+			flake = false;
+		};
+    oceanicnext = {
+			url = github:mhartington/oceanic-next;
+			flake = false;
+		};
+    nvim-transparent = {
+      url = github:xiyaowong/nvim-transparent;
       flake = false;
     };
 
-    # Rust crates
-    crates-nvim = {
-      url = github:Saecki/crates.nvim;
-      flake = false;
-    };
-
-    # Visuals
-    nvim-cursorline = {
-      url = github:yamatsum/nvim-cursorline;
-      flake = false;
-    };
-    indent-blankline = {
-      url = github:lukas-reineke/indent-blankline.nvim;
-      flake = false;
-    };
-    nvim-web-devicons = {
-      url = github:kyazdani42/nvim-web-devicons;
-      flake = false;
-    };
-    gitsigns-nvim = {
-      url = github:lewis6991/gitsigns.nvim;
-      flake = false;
-    };
-
-    # Fx
-    cellular-automaton = {
-      url = github:Eandrju/cellular-automaton.nvim;
-      flake = false;
-    };
-
-    # Key binding help
+    #-------------------------------------
+    # Editor Plugins
+    #-------------------------------------
+    neo-tree = {
+			url = github:nvim-neo-tree/neo-tree.nvim;
+			flake = false;
+		};
+    nvim-spectre = {
+			url = github:windwp/nvim-spectre;
+			flake = false;
+		};
+    telescope = {
+			url = github:nvim-telescope/telescope.nvim;
+			flake = false;
+		};
+    flit = {
+			url = github:ggandor/flit.nvim;
+			flake = false;
+		};
+    leap = {
+			url = github:ggandor/leap.nvim;
+			flake = false;
+		};
     which-key = {
-      url = github:folke/which-key.nvim;
-      flake = false;
-    };
+			url = github:folke/which-key.nvim;
+			flake = false;
+		};
+    gitsigns = {
+			url = github:lewis6991/gitsigns.nvim;
+			flake = false;
+		};
+    vim-illuminate = {
+			url = github:RRethy/vim-illuminate;
+			flake = false;
+		};
+    mini-bufremove = {
+			url = github:echasnovski/mini.bufremove;
+			flake = false;
+		};
+    trouble = {
+			url = github:folke/trouble.nvim;
+			flake = false;
+		};
+    todo-comments = {
+			url = github:folke/todo-comments.nvim;
+			flake = false;
+		};
 
-    # Markdown
-    glow-nvim = {
-      url = github:ellisonleao/glow.nvim;
-      flake = false;
-    };
+    #-------------------------------------
+    # LSP Plugins
+    #-------------------------------------
+    nvim-lspconfig = {
+			url = github:neovim/nvim-lspconfig;
+			flake = false;
+		};
+    neoconf = {
+			url = github:folke/neoconf.nvim;
+			flake = false;
+		};
+    neodev = {
+			url = github:folke/neodev.nvim;
+			flake = false;
+		};
+    mason-lspconfig = {
+			url = github:williamboman/mason-lspconfig.nvim;
+			flake = false;
+		};
+    null-ls = {
+			url = github:jose-elias-alvarez/null-ls.nvim;
+			flake = false;
+		};
+    mason = {
+			url = github:williamboman/mason.nvim;
+			flake = false;
+		}; # TODO is this needed?
 
-    # Organized notes in trees
-    mind-nvim = {
-      url = github:gvolpe/mind.nvim;
-      #url = github:phaazon/mind.nvim;
-      flake = false;
-    };
+    #-------------------------------------
+    # Treesitter Plugins
+    #-------------------------------------
+    nvim-treesitter = {
+			url = github:nvim-treesitter/nvim-treesitter;
+			flake = false;
+		};
+    nvim-treesitter-textobjects = {
+			url = github:nvim-treesitter/nvim-treesitter-textobjects;
+			flake = false;
+		};
 
-    # Plenary (required by crates-nvim)
-    plenary-nvim = {
-      url = github:nvim-lua/plenary.nvim;
-      flake = false;
-    };
+    #-------------------------------------
+    # UI Plugins
+    #-------------------------------------
+    nvim-notify = {
+			url = github:rcarriga/nvim-notify;
+			flake = false;
+		};
+    dressing = {
+			url = github:stevearc/dressing.nvim;
+			flake = false;
+		};
+    bufferline = {
+			url = github:akinsho/bufferline.nvim;
+			flake = false;
+		};
+    lualine = {
+			url = github:nvim-lualine/lualine.nvim;
+			flake = false;
+		};
+    indent-blankline = {
+			url = github:lukas-reineke/indent-blankline.nvim;
+			flake = false;
+		};
+    mini-indentscope = {
+			url = github:echasnovski/mini.indentscope;
+			flake = false;
+		};
+    noice = {
+			url = github:folke/noice.nvim;
+			flake = false;
+		};
+    alpha = {
+			url = github:goolord/alpha-nvim;
+			flake = false;
+		};
+    nvim-navic = {
+			url = github:SmiteshP/nvim-navic;
+			flake = false;
+		};
+    nvim-web-devicons = {
+			url = github:nvim-tree/nvim-web-devicons;
+			flake = false;
+		};
+    nui = {
+			url = github:MunifTanjim/nui.nvim;
+			flake = false;
+		};
 
-    # Plant UML syntax highlights
-    vim-plantuml = {
-      url = github:aklt/plantuml-syntax;
-      flake = false;
-    };
+    #-------------------------------------
+    # Utility Plugins
+    #-------------------------------------
+    persistence = {
+			url = github:folke/persistence.nvim;
+			flake = false;
+		};
+    plenary = {
+			url = github:nvim-lua/plenary.nvim;
+			flake = false;
+		};
+
+    #-------------------------------------
+    # Extra Plugins
+    #-------------------------------------
+    # prettier = {
+		# 	url = github:;
+		# 	flake = false;
+		# };
+    mini-starter = {
+			url = github:echasnovski/mini.starter;
+			flake = false;
+		};
   };
 
   outputs = inputs @ { self, nixpkgs, flake-utils, ... }:
@@ -294,20 +254,15 @@
               "nixpkgs"
               "flake-utils"
               "neovim-nightly-flake"
-              "nmd"
-              "ts-build"
-              "tree-sitter-scala"
-              "tree-sitter-typescript"
             ];
           in
           builtins.attrNames (f nonPluginInputNames inputs);
 
         lib = import ./lib { inherit pkgs inputs plugins; };
 
-        inherit (lib) metalsBuilder metalsOverlay neovimBuilder;
+        inherit (lib) neovimBuilder;
 
         pluginOverlay = lib.buildPluginOverlay;
-        nmdOverlay = inputs.nmd.overlays.default;
 
         libOverlay = f: p: {
           lib = p.lib.extend (_: _: {
@@ -316,12 +271,6 @@
         };
 
         tsOverlay = f: p: {
-          tree-sitter-scala-master = p.tree-sitter.buildGrammar {
-            language = "scala";
-            version = inputs.tree-sitter-scala.rev;
-            src = inputs.tree-sitter-scala;
-          };
-
           tree-sitter-tsx-master = p.tree-sitter.buildGrammar {
             language = "tsx";
             version = inputs.tree-sitter-typescript.rev;
@@ -336,20 +285,13 @@
         pkgs = import nixpkgs {
           inherit system;
           config = { allowUnfree = true; };
-          overlays = [ libOverlay pluginOverlay metalsOverlay neovimOverlay nmdOverlay tsOverlay ];
+          overlays = [ libOverlay pluginOverlay neovimOverlay tsOverlay ];
         };
 
         default-ide = pkgs.callPackage ./lib/ide.nix {
           inherit pkgs neovimBuilder;
         };
 
-        searchdocs = pkgs.callPackage ./docs/search { };
-
-        docbook = with import ./docs { inherit pkgs; inherit (pkgs) lib; }; {
-          inherit manPages jsonModuleMaintainers;
-          inherit (manual) html;
-          inherit (options) json;
-        };
       in
       rec {
         apps = rec {
@@ -362,7 +304,7 @@
         };
 
         overlays.default = f: p: {
-          inherit metalsBuilder neovimBuilder;
+          inherit neovimBuilder;
           inherit (pkgs) neovim-nightly neovimPlugins;
         };
 
@@ -376,37 +318,19 @@
         packages = {
           default = default-ide.full.neovim;
 
-          # Documentation
-          docs = docbook.html;
-          docs-json = searchdocs.json;
-          docs-search = searchdocs.html;
-
           # CI package
-          ts-scala = pkgs.tree-sitter-scala-master;
-          inherit (pkgs) metals;
           inherit (pkgs.neovimPlugins) nvim-treesitter;
 
-          # Main languages enabled
-          ide = default-ide.full.neovim;
-
-          # Only Haskell (quite heavy)
-          haskell = default-ide.haskell.neovim;
-
-          # Only Scala with different themes
-          scala = default-ide.scala.neovim;
-          scala-nightly = default-ide.scala-nightly.neovim;
-          scala-rose-pine = default-ide.scala-rose-pine.neovim;
-          scala-tokyo-night = default-ide.scala-tokyo-night.neovim;
+          ide = default-ide.full.neovim;  # my personal config
+          lazy = default-ide.lazy.neovim; # default lazyvim config
 
           # Neovim configuration files
           ide-neovim-rc = default-ide.full.neovimRC;
-          haskell-neovim-rc = default-ide.haskell.neovimRC;
-          scala-neovim-rc = default-ide.scala.neovimRC;
+          lazy-neovim-rc = default-ide.lazy.neovimRC;
 
           # Lua configuration files
           ide-lua-rc = default-ide.full.luaRC;
-          haskell-lua-rc = default-ide.haskell.luaRC;
-          scala-lua-rc = default-ide.scala.luaRC;
+          lazy-lua-rc = default-ide.lazy.luaRC;
         };
       }
     );

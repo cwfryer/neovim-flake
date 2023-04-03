@@ -2,31 +2,15 @@
 
 {
   imports = [
-    ./autopairs
-    ./basic
-    ./comments
-    ./completion
+    ./coding
+    ./colorscheme
     ./core
-    ./filetree
-    ./fx
-    ./git
-    ./hop
+    ./editor
     ./keys
     ./lsp
-    ./markdown
-    ./mind
-    ./neoclip
     ./neovim
-    ./plantuml
-    ./scala
-    ./snippets
-    ./statusline
-    ./surround
-    ./tabline
-    ./telescope
-    ./theme
-    ./todo
     ./treesitter
-    ./visuals
+    ./ui
+    ./util
   ];
 }
