@@ -20,7 +20,7 @@ in
     };
   };
   config = {
-    vim.startPlugins = with pkgs.neovimPlugis;
+    vim.startPlugins = with pkgs.neovimPlugins;
       (withPlugins (cfg.set == "catppuccin") [ catppuccin ]) ++
       (withPlugins (cfg.set == "tokyonight") [ tokyonight ]) ++
       (withPlugins (cfg.set == "oceanicnext") [ oceanicnext ]) ++
@@ -28,19 +28,19 @@ in
     
     vim.configRC = ''
       set background = dark
-      ${writeIf cfg.set == "oceanicnext" ''
+      ${writeIf (cfg.set == "oceanicnext") ''
         colorscheme oceanicnext
       ''}
-      ${writeIf cfg.set == "tokyonight" ''
+      ${writeIf (cfg.set == "tokyonight") ''
         colorscheme tokyonight-moon
       ''}
-      ${writeIf cfg.set == "catppuccin" ''
+      ${writeIf (cfg.set == "catppuccin") ''
         colorscheme catppuccin-macchiato
       ''}
     '';
 
     vim.luaConfigRC = ''
-      ${writeIf (cfg.transparent) ''
+      ${writeIf cfg.transparent ''
         -- Enable transparency
         require('transparent').setup({enable = true})
       ''}

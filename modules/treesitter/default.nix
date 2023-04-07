@@ -16,13 +16,13 @@ in
     textobjects = mkOption {
       type = types.bool;
       default = false;
-      description = "Enable nvim-treesitter-objects with default config";
+      description = "Enable nvim-treesitter-textobjects with default config";
     };
   };
   config = mkIf cfg.enable {
     vim.startPlugins = with pkgs.neovimPlugins;
     [ nvim-treesitter ] ++
-    (withPlugins cfg.textobjects [nvim-treesitter-objects]);
+    (withPlugins cfg.textobjects [nvim-treesitter-textobjects]);
 
     vim.luaConfigRC = ''
     -- ---------------------------------------
@@ -54,6 +54,27 @@ in
           lsp_interop = { enable = true, },
         },
         ''}
+        ensure_installed = {
+          "bash",
+          "c",
+          "help",
+          "html",
+          "javascript",
+          "json",
+          "lua",
+          "luap",
+          "markdown",
+          "markdown_inline",
+          "nix",
+          "python",
+          "query",
+          "regex",
+          "rust",
+          "tsx",
+          "typescript",
+          "vim",
+          "yaml",
+        },
       }
     '';
   };

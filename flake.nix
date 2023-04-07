@@ -1,5 +1,5 @@
 {
-  description = "Neovim Flake by Gabriel Volpe";
+  description = "Neovim Flake by Casey Fryer";
 
   inputs = {
     #nixpkgs.url = git+file:///home/gvolpe/workspace/nixpkgs;
@@ -8,6 +8,11 @@
 
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
+
+    tree-sitter = {
+      url = github:tree-sitter/tree-sitter;
+      flake = false;
+    };
 
     #-------------------------------------
     # Coding Plugins
@@ -40,6 +45,10 @@
 			url = github:saadparwaiz1/cmp_luasnip;
 			flake = false;
 		};
+    lspkind = {
+      url = github:onsails/lspkind.nvim;
+      flake = false;
+    };
     mini-pairs = {
 			url = github:echasnovski/mini.pairs;
 			flake = false;
@@ -128,6 +137,10 @@
 			url = github:folke/todo-comments.nvim;
 			flake = false;
 		};
+    toggleterm = {
+      url = github:akinsho/toggleterm.nvim;
+      flake = false;
+    };
 
     #-------------------------------------
     # LSP Plugins
@@ -156,6 +169,14 @@
 			url = github:williamboman/mason.nvim;
 			flake = false;
 		}; # TODO is this needed?
+    crates-nvim = {
+      url = github:Saecki/crates.nvim;
+      flake = false;
+    };
+    rust-tools = {
+      url = github:simrat39/rust-tools.nvim;
+      flake = false;
+    };
 
     #-------------------------------------
     # Treesitter Plugins
@@ -271,10 +292,10 @@
         };
 
         tsOverlay = f: p: {
-          tree-sitter-tsx-master = p.tree-sitter.buildGrammar {
-            language = "tsx";
-            version = inputs.tree-sitter-typescript.rev;
-            src = inputs.tree-sitter-typescript;
+          tree-sitter-master = p.tree-sitter.buildGrammar {
+            language = "rust";
+            version = inputs.tree-sitter.rev;
+            src = inputs.tree-sitter;
           };
         };
 

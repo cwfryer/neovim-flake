@@ -19,7 +19,7 @@ in
         default = false;
         description = "Enable LuaSnip snippets engine";
       };
-      useFriendlySnippets = {
+      useFriendlySnippets = mkOption {
         type = types.bool;
         default = false;
         description = "Use friendly-snippets collection";
@@ -74,7 +74,7 @@ in
           default = false;
           description = "Enable line/block comment commands";
         };
-        useTreeSitterContext = {
+        useTreeSitterContext = mkOption {
           type = types.bool;
           default = false;
           description = "Use Treesitter to improve comment string recognition";
@@ -89,48 +89,47 @@ in
   };
   config = mkIf cfg.enable {
     vim.startPlugins = with pkgs.neovimPlugins; 
-    [] ++
     (withPlugins cfg.snippets.enable [lua-snip]) ++
     (withPlugins cfg.snippets.useFriendlySnippets [friendly-snippets]) ++
-    (withPlugins cfg.completion.enable [nvim-cmp]) ++
+    (withPlugins cfg.completion.enable [nvim-cmp lspkind]) ++
     (withPlugins cfg.completion.completeFromLSP [cmp-nvim-lsp]) ++
     (withPlugins cfg.completion.completeFromBuffer [cmp-buffer]) ++
     (withPlugins cfg.completion.completeFromPath [cmp-path]) ++
     (withPlugins cfg.completion.completeFromLuaSnip [cmp-luasnip]) ++
-    (withPlugins cfg.helpers.autoPair.enable [mini-pairs]) ++
-    (withPlugins cfg.helpers.surround.enable [mini-surround]) ++
-    (withPlugins cfg.helpers.comment.useTreeSitterContext [nvim-ts-commentstring]) ++
+    (withPlugins cfg.helpers.autoPair [mini-pairs]) ++
+    (withPlugins cfg.helpers.surround [mini-surround]) ++
     (withPlugins cfg.helpers.comment.enable [mini-comment]) ++
-    (withPlugins cfg.helpers.betterAISelection.enable [mini-ai]);
+    (withPlugins cfg.helpers.comment.useTreeSitterContext [nvim-ts-commentstring]) ++
+    (withPlugins cfg.helpers.betterAISelection [mini-ai]);
 
     vim.luaConfigRC = ''
     -- ---------------------------------------
     -- Coding Config
     -- ---------------------------------------
       ${writeIf cfg.snippets.enable ''
+      -- Luasnip config
         require'luasnip'.setup({
-          opts = {
-            history = true,
-            delete_check_events = "TextChanged",
-          },
-          keys = {
-            {
-              "<tab>",
-              function()
-                return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
-              end,
-              expr = true, silent = true, mode = i,
-            },
-            { "<tab>" function() require("luasnip").jump(1) end, mode = "s"},
-            { "<s-tab>" function() require("luasnip").jump(-1) end, mode = {"i",s"}},
-          },
+          history = true,
+          delete_check_events = "TextChanged",
         })
         ${writeIf cfg.snippets.useFriendlySnippets ''
           require("luasnip.loaders.from_vscode").lazy_load()
         ''}
+        --Luasnip keys
+        map(
+          "i",
+          "<tab>",
+          function()
+            return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
+          end,
+          {expr=true,silent=true}
+        )
+        map("s","<tab>", function() require("luasnip").jump(1) end)
+        map({"i",s"},"<s-tab>", function() require("luasnip").jump(-1) end)
       ''}
       ${writeIf cfg.completion.enable ''
         local cmp = require'cmp'
+        local lspkind = require'lspkind'
         cmp.setup({
           completion = {
             completeopt = "menu,menuone,noinsert",
@@ -185,15 +184,7 @@ in
             ${writeIf cfg.completion.completeFromPath ''{ name = "buffer" },''}
             ${writeIf cfg.completion.completeFromLuaSnip ''{ name = "path" },''}
           }),
-          formatting = {
-            format = function(_, item)
-              local icons = require("").icons.kinds
-              if icons[item.kind] then
-                item.kind = icons[item.kind] .. item.kind
-              end
-              return item
-            end,
-          },
+          formatting = lspkind.cmp_format(),
           experimental = {
             ghost_text = { hl_group = "LspCodeLens" },
           },
@@ -227,6 +218,60 @@ in
         })
       ''}
       ${writeIf cfg.helpers.betterAISelection ''
+        -- mini.ai config
+        require("mini.ai").setup({
+          n_lines = 500,
+          custom_textobjects = {
+            o = require("mini.ai").gen_spec.treesitter({
+              a = { "@block.outer", "@conditional.outer", "@loop.outer" },
+              i = { "@block.inner", "@conditional.inner", "@loop.inner" },
+            }, {}),
+            f = require("mini.ai").gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
+            c = require("mini.ai").gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
+            })
+          },
+        })
+        
+        -- mini.ai keys
+        local i = {
+          [" "] = "Whitespace",
+          ['"'] = 'Balanced "',
+          ["'"] = "Balanced '",
+          ["`"] = "Balanced `",
+          ["("] = "Balanced (",
+          [")"] = "Balanced ) including white-space",
+          [">"] = "Balanced > including white-space",
+          ["<lt>"] = "Balanced <",
+          ["]"] = "Balanced ] including white-space",
+          ["["] = "Balanced [",
+          ["}"] = "Balanced } including white-space",
+          ["{"] = "Balanced {",
+          ["?"] = "User Prompt",
+          _ = "Underscore",
+          a = "Argument",
+          b = "Balanced ), ], }",
+          c = "Class",
+          f = "Function",
+          o = "Block, conditional, loop",
+          q = "Quote `, \", '",
+          t = "Tag",
+        }
+        local a = vim.deepcopy(i)
+        for k, v in pairs(a) do
+          a[k] = v:gsub(" including.*", "")
+        end
+
+        local ic = vim.deepcopy(i)
+        local ac = vim.deepcopy(a)
+        for key, name in pairs({ n  "Next", l = "Last" }) do
+          i[key] = vim.tbl_extend("force", { name = "Inside " .. name .. " textobject" }, ic)
+          a[key] = vim.tbl_extend("force", { name = "Around " .. name .. " textobject" }, ac)
+        end
+        require("which-key").register({
+          mode = {"o","x" },
+          i = i,
+          a = a,
+        })
       ''}
     '';
   };

@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./basic
     ./coding
     ./colorscheme
     ./core

@@ -5,9 +5,8 @@ let
 
   cfg = {
     vim = {
-      core = {
-      };
-      neovim = {};
+      viAlias = false;
+      vimAlias = true;
       coding = {
         enable = true;
         snippets = {
@@ -18,7 +17,7 @@ let
           enable = true;
           useSuperTab = true;
           completeFromLSP = true;
-          compelteFromBuffer = true;
+          completeFromBuffer = true;
           completeFromPath = true;
           completeFromLuaSnip = true;
         };
@@ -51,11 +50,15 @@ let
           betterTODOComments = true;
         };
         improveDiagnostics = true;
+        enableFloatingTerminal = true;
       };
-      keys = {};
+      keys = {
+        enable = true;
+        whichKey.enable = true;
+      };
       lsp = {
         enable = true;
-        extra = {
+        extras = {
           neoconf = true;
           neodev = false;
         };
@@ -99,14 +102,17 @@ let
       };
     };
   };
+  nightly = {
+    vim.neovim.package = pkgs.neovim-nightly;
+  };
 in
 {
   lazy = neovimBuilder {
-    config = deepMerge cfg;
+    config = deepMerge cfg nightly;
   };
 
   full = neovimBuilder {
-    config = deepMerge cfg;
+    config = deepMerge cfg nightly;
   };
 
 }

@@ -82,8 +82,8 @@ in
     (withPlugins cfg.uiAdditions.lualine.enable [lualine]) ++
     (withPlugins cfg.uiAdditions.lualine.improveContext [nvim-navic]) ++
     (withPlugins cfg.uiAdditions.indents [mini-indentscope]) ++
-    (withPlugins (cfg.uiAdditions.dashboard) == "alpha" [alpha]) ++
-    (withPlugins (cfg.uiAdditions.dashboard) == "mini.starter" [mini-starter]);
+    (withPlugins (cfg.uiAdditions.dashboard == "alpha") [alpha]) ++
+    (withPlugins (cfg.uiAdditions.dashboard == "mini.starter") [mini-starter]);
 
     vim.luaConfigRC = ''
     -- ---------------------------------------
@@ -104,6 +104,12 @@ in
           long_message_to_split = true,
         },
       })
+      map("n","<S-Enter>", function() require("noice").redirect(vim.fn.getcmdline()) end, { desc = "Redirect Cmdline" })
+      map("n","<leader>snl", function() require("noice").cmd("last") end, { desc = "Noice Last Message"})
+      map("n","<leader>snh", function() require("noice").cmd("history") end, { desc = "Noice History"})
+      map("n","<leader>sna", function() require("noice").cmd("all") end, { desc = "Noice All"})
+      map({"i","n","s"},"<c-f>",function() if not require("noice").scroll(4) then return "<c-f>" end end, {silent=true,expr=true,desc="Scroll Forward"})
+      map({"i","n","s"},"<c-b>",function() if not require("noice").scroll(-4) then return "<c-b>" end end, {silent=true,expr=true,desc="Scroll Backward"})
     ''}
     ${writeIf (cfg.uiTweaks.system == "nvim-notify") ''
       vim.notify = require("notify").setup({
@@ -115,15 +121,21 @@ in
           return math.floor(vim.o.columns * 0.75)
         end,
       })
+      map("n","<leader>un",
+        function()
+          require("notify").dismiss({ silent = true, pending = true })
+        end,
+        {desc = "Delete all notifications"}
+      )
     ''}
     ${writeIf cfg.uiTweaks.interfaces ''
-      require('dressing').setup({})
+      require('dressing').setup()
     ''}
     ${writeIf cfg.uiTweaks.icons ''
-      require('nvim-web-devicons').setup({})
+      require('nvim-web-devicons').setup()
     ''}
     ${writeIf cfg.uiTweaks.components ''
-      require('nui').setup({})
+      require('nui').setup()
     ''}
     ${writeIf cfg.uiTweaks.indents ''
       require("indent_blankline").setup({
@@ -140,7 +152,12 @@ in
           diagnostics = "nvim_lsp",
           always_show_bufferline = false,
           diagnostics_indicator = function(_,_,diag)
-            local icons = require("icon_file").icons.diagnostics
+            local icons = {
+              Error = " ",
+              Warn = " ",
+              Hint = " ",
+              Info = " ",
+            }
             local ret = (diag.error and icons.Error .. diag.error .. " " or "")
               .. (diag.warning and icons.Warn .. diag.warning or "")
             return vim.trim(ret)
@@ -155,8 +172,10 @@ in
           },
         },
       })
+      map("n","<leader>bp","<cmd>BufferLineTogglePin<CR>", { desc = "Toggle pin" })
+      map("n","<leader>bP","<cmd>BufferLineGroupClose ungrouped<CR>", { desc = "Delete non-pinned buffers" })
     ''}
-    ${writeIf cfg.uiAdditions.lualina.enable ''
+    ${writeIf cfg.uiAdditions.lualine.enable ''
       require('lualine').setup({
         options = {
           theme = "auto",
@@ -170,10 +189,10 @@ in
             {
               "diagnostics",
               symbols = {
-                error = icons...,
-                warn = icons...,
-                info = icons...,
-                hint = icons...,
+                error = " ",
+                warn = " ",
+                hint = " ",
+                info = " ",
               },
             },
             { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
@@ -199,9 +218,9 @@ in
             {
               "diff",
               symbols = {
-                added = icons...,
-                modified = icons...,
-                removed = icons...,
+                added = " ",
+                modified = " ",
+                removed = " ",
               },
             },
           },
@@ -218,10 +237,28 @@ in
         extensions = { "neo-tree" },
       })
     ''}
+    ${writeIf cfg.uiAdditions.lualine.improveContext ''
+    vim.g.navic_silence = true
+    vim.api.nvim_create_autocmd("LspAttach", {
+      callback = function(args)
+        local buffer = args.buf
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if client.server_capabilities.documentSymbolProvider then
+          require("nvim-navic").attach(client, buffer)
+        end
+      end,
+    })
+    ''}
     ${writeIf cfg.uiAdditions.indents ''
     require("mini.indentscope").setup({
       symbol = "|",
       options = { try_as_border = true },
+    })
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = {"help", "alpha", "dashboard", "neo-tree", "Trouble"},
+      callback = function()
+        vim.b.miniindentscope_disable = true
+      end,
     })
     ''}
     ${writeIf (cfg.uiAdditions.dashboard == "mini.starter") ''

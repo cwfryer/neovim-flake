@@ -112,6 +112,22 @@
         "type": "github"
       }
     },
+    "crates-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1680387248,
+        "narHash": "sha256-Qt3x9I1RzFtknxy3qJaaZczSLvO10OQ6N1+RLhfuQ7I=",
+        "owner": "Saecki",
+        "repo": "crates.nvim",
+        "rev": "1d4bb1e7a0fe8bae3f97061be5fbf6f9081a27e2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Saecki",
+        "repo": "crates.nvim",
+        "type": "github"
+      }
+    },
     "dressing": {
       "flake": false,
       "locked": {
@@ -251,6 +267,22 @@
       "original": {
         "owner": "ggandor",
         "repo": "leap.nvim",
+        "type": "github"
+      }
+    },
+    "lspkind": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1663824370,
+        "narHash": "sha256-WwUQ+O2rIfD4yl0GFx70GsZc9nnhS7b2KWfNdaXCLmM=",
+        "owner": "onsails",
+        "repo": "lspkind.nvim",
+        "rev": "c68b3a003483cf382428a43035079f78474cd11e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "onsails",
+        "repo": "lspkind.nvim",
         "type": "github"
       }
     },
@@ -805,6 +837,7 @@
         "cmp-luasnip": "cmp-luasnip",
         "cmp-nvim-lsp": "cmp-nvim-lsp",
         "cmp-path": "cmp-path",
+        "crates-nvim": "crates-nvim",
         "dressing": "dressing",
         "flake-utils": "flake-utils",
         "flit": "flit",
@@ -812,6 +845,7 @@
         "gitsigns": "gitsigns",
         "indent-blankline": "indent-blankline",
         "leap": "leap",
+        "lspkind": "lspkind",
         "lua-snip": "lua-snip",
         "lualine": "lualine",
         "mason": "mason",
@@ -844,12 +878,31 @@
         "oceanicnext": "oceanicnext",
         "persistence": "persistence",
         "plenary": "plenary",
+        "rust-tools": "rust-tools",
         "telescope": "telescope",
         "todo-comments": "todo-comments",
+        "toggleterm": "toggleterm",
         "tokyonight": "tokyonight",
+        "tree-sitter": "tree-sitter",
         "trouble": "trouble",
         "vim-illuminate": "vim-illuminate",
         "which-key": "which-key"
+      }
+    },
+    "rust-tools": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1676929960,
+        "narHash": "sha256-Cuk/vdoviB9ibt2rrkNRmNFy4S+6czhbExmIjTJRdZM=",
+        "owner": "simrat39",
+        "repo": "rust-tools.nvim",
+        "rev": "71d2cf67b5ed120a0e31b2c8adb210dd2834242f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "simrat39",
+        "repo": "rust-tools.nvim",
+        "type": "github"
       }
     },
     "telescope": {
@@ -884,6 +937,22 @@
         "type": "github"
       }
     },
+    "toggleterm": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1680290314,
+        "narHash": "sha256-862KtB9oqktx/mPI0wSauF7eJIJogqgG6wTTYlCSo9U=",
+        "owner": "akinsho",
+        "repo": "toggleterm.nvim",
+        "rev": "b86982429325112d2b20c6d0cc7a5c4b182ab705",
+        "type": "github"
+      },
+      "original": {
+        "owner": "akinsho",
+        "repo": "toggleterm.nvim",
+        "type": "github"
+      }
+    },
     "tokyonight": {
       "flake": false,
       "locked": {
@@ -897,6 +966,22 @@
       "original": {
         "owner": "folke",
         "repo": "tokyonight.nvim",
+        "type": "github"
+      }
+    },
+    "tree-sitter": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1680622638,
+        "narHash": "sha256-oy9zf6DvJHBWnVo/Ttkm5eq3Oy3FtoimODENNoxT8Kc=",
+        "owner": "tree-sitter",
+        "repo": "tree-sitter",
+        "rev": "c26dde041406cdb4e0b40e705fb5f8fac42935fb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tree-sitter",
+        "repo": "tree-sitter",
         "type": "github"
       }
     },

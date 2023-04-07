@@ -76,6 +76,7 @@ in
 
     -- Global LSP options
 
+    -- Utility function to goto by severity
     function diagnostic_goto(next, severity)
       local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
       severity = severity and vim.diagnostic.severity[severity] or nil
@@ -84,6 +85,27 @@ in
       end
     end
 
+    -- Utility function to trigger formatting based on format engine
+    function format()
+      local buf = vim.api.nvim_get_current_buf()
+      if vim.b.autoformat = false then
+        return
+      end
+      local ft = vim.bo[buf].filetype
+      local have_nls = #require("null-ls.sources").get_available(ft, "NULL_LS_FORMATTING") > 0
+
+      vim.lsp.buf.format(vim.tbl_deep_extend("force", {
+        bufnr = buf,
+        filter = function(client)
+          if have_nls then
+            return client.name == "null-ls"
+          end
+          return client.name ~= "null-ls"
+        end,
+      },{}))
+    end
+
+    -- Utility function to set keymaps by LSP-active buffer
     local attach_keymaps = function(client, bufnr)
       local opts = { noremap=true, silent=true }
 
@@ -103,12 +125,36 @@ in
       vim.api.nvim_buf_set_keymap(bufnr, 'n', '[e', diagnostic_goto(false, "ERROR"), {desc="Prev Error",table.unpack(opts)})
       vim.api.nvim_buf_set_keymap(bufnr, 'n', ']w', diagnostic_goto(true, "WARN"), {desc="Next Warning",table.unpack(opts)})
       vim.api.nvim_buf_set_keymap(bufnr, 'n', '[w', diagnostic_goto(false, "WARN"), {desc="Prev Warning",table.unpack(opts)})
-      -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>cf', format, {desc="Format Document",table.unpack(opts)})
-      -- vim.api.nvim_buf_set_keymap(bufnr, 'v', '<leader>cf', format, {desc="Format Range",table.unpack(opts)})
+      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>cf', format(), {desc="Format Document",table.unpack(opts)})
+      vim.api.nvim_buf_set_keymap(bufnr, 'v', '<leader>cf', format(), {desc="Format Range",table.unpack(opts)})
       vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', vim.lsp.buf.code_action, {desc="",table.unpack(opts)})
-      -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>cA', 'action<CR>', {desc="Code Action",table.unpack(opts)})
+      vim.api.nvim_buf_set_keymap(bufnr, 
+        'n',
+        '<leader>cA',
+        function()
+          vim.lsp.buf.code_action({
+            context = {
+              only = {
+                "source"
+              },
+              diagnostics = {},
+            }
+          })
+        end,
+        {desc="Code Action",table.unpack(opts)}
+      )
     end
 
+    -- Auto set keys when Lsp server attaches
+    vim.api.nvim_create_autocmd("LspAttach", {
+      callback = function(args)
+        local buffer = args.buf
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        attach_keymaps(client, buffer)
+      end,
+    })
+
+    -- Auto format autocommand to be used by null-ls
     format_callback = function(client, bufnr)
       vim.api.nvim_create_autocmd("BufWritePre", {
         group = augroup,
@@ -126,11 +172,11 @@ in
     end
 
       ${writeIf cfg.extras.neodev ''
-        require("neodev").setup({})
+        require("neodev").setup()
       ''}
 
       ${writeIf cfg.extras.neoconf ''
-        require("neoconf").setup({})
+        require("neoconf").setup()
       ''}
 
       ${writeIf cfg.autoFormatting ''

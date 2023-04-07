@@ -9,11 +9,11 @@ let
   inherit (prev.vimUtils) buildVimPluginFrom2Nix;
 
   ts = prev.tree-sitter.override {
-    extraGrammars = {
-      tree-sitter-scala = final.tree-sitter-scala-master;
-      tree-sitter-tsx = final.tree-sitter-tsx-master;
-      tree-sitter-typescript = final.tree-sitter-tsx-master;
-    };
+    # extraGrammars = {
+    #   tree-sitter-scala = final.tree-sitter-scala-master;
+    #   tree-sitter-tsx = final.tree-sitter-tsx-master;
+    #   tree-sitter-typescript = final.tree-sitter-tsx-master;
+    # };
   };
 
   treesitterGrammars = ts.withPlugins (p: [
