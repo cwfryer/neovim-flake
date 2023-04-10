@@ -29,11 +29,6 @@ in
         default = false;
         description = "Enable nvim-web-devicons fancy icon support";
 			};
-      components = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Enable nui.nvim UI components";
-			};
       indents = mkOption {
         type = types.bool;
         default = false;
@@ -73,10 +68,9 @@ in
   config = mkIf cfg.enable {
     vim.startPlugins = with pkgs.neovimPlugins;
     [] ++
-    (if cfg.uiTweaks.system == "noice.nvim" then [noice] else [nvim-notify]) ++
+    (if cfg.uiTweaks.system == "noice.nvim" then [noice nui] else [nvim-notify]) ++
     (withPlugins cfg.uiTweaks.interfaces [dressing]) ++
     (withPlugins cfg.uiTweaks.icons [nvim-web-devicons]) ++
-    (withPlugins cfg.uiTweaks.components [nui]) ++
     (withPlugins cfg.uiTweaks.indents [indent-blankline]) ++
     (withPlugins cfg.uiAdditions.bufferline [bufferline]) ++
     (withPlugins cfg.uiAdditions.lualine.enable [lualine]) ++
@@ -134,12 +128,9 @@ in
     ${writeIf cfg.uiTweaks.icons ''
       require('nvim-web-devicons').setup()
     ''}
-    ${writeIf cfg.uiTweaks.components ''
-      require('nui').setup()
-    ''}
     ${writeIf cfg.uiTweaks.indents ''
       require("indent_blankline").setup({
-        char = "|",
+        char = "│",
         filetype_exclude = {"help", "alpha", "dashboard", "neo-tree", "trouble"},
         show_trailing_blankline_indent = false,
         show_current_context = false,
@@ -196,11 +187,11 @@ in
               },
             },
             { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-            { "filename", path = 1, symbols = { modified = "xxx", readonly = "", unnamed = "" } },
+            { "filename", path = 1, symbols = { modified = "  ", readonly = "", unnamed = "" } },
             ${writeIf cfg.uiAdditions.lualine.improveContext ''
             {
               function() return require('nvim-navic').get_location() end,
-              cond = require('nvim-navic').is_available() end,
+              cond = function() return require('nvim-navic').is_available() end,
             },
             ''}
           },
@@ -212,7 +203,7 @@ in
             },
             {
               function() return require("noice").api.status.mode.get() end,
-              cond = function() return require("noice").api.status.mode.has(), end,
+              cond = function() return require("noice").api.status.mode.has() end,
             },
             ''}
             {
@@ -230,7 +221,7 @@ in
           },
           lualine_z = {
             function()
-              return "xxx" .. os.date("%R")
+              return " " .. os.date("%R")
             end,
           },
         },
@@ -251,7 +242,7 @@ in
     ''}
     ${writeIf cfg.uiAdditions.indents ''
     require("mini.indentscope").setup({
-      symbol = "|",
+      symbol = "│",
       options = { try_as_border = true },
     })
     vim.api.nvim_create_autocmd("FileType", {

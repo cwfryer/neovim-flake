@@ -47,7 +47,7 @@ in
         ["<leader>w"] = { name = "+windows"},
         ["<leader>x"] = { name = "+diagnostics/quickfix"},
       }
-      ${writeIf config.vim.uiTweaks.system == "noice.nvim" ''
+      ${writeIf (config.vim.ui.uiTweaks.system == "noice.nvim") ''
       keymaps["<leader>sn"] = { name = "+noice" }
       ''}
       wk.register(keymaps)

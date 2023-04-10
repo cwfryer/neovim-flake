@@ -86,6 +86,7 @@ in
         description = "Enable improved A and I text selection";
       };
     };
+
   };
   config = mkIf cfg.enable {
     vim.startPlugins = with pkgs.neovimPlugins; 
@@ -106,6 +107,13 @@ in
     -- ---------------------------------------
     -- Coding Config
     -- ---------------------------------------
+      ${writeIf cfg.completion.useSuperTab ''
+      local has_words_before = function()
+        unpack = unpack or table.unpack
+        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line-1, line, true)[1]:sub(col, col):match("%s") == nil
+      end
+      ''}
       ${writeIf cfg.snippets.enable ''
       -- Luasnip config
         require'luasnip'.setup({
@@ -125,7 +133,7 @@ in
           {expr=true,silent=true}
         )
         map("s","<tab>", function() require("luasnip").jump(1) end)
-        map({"i",s"},"<s-tab>", function() require("luasnip").jump(-1) end)
+        map({"i","s"},"<s-tab>", function() require("luasnip").jump(-1) end)
       ''}
       ${writeIf cfg.completion.enable ''
         local cmp = require'cmp'
@@ -177,14 +185,16 @@ in
                 select = true,
               }),
             }),
-          ''};
+          ''}
           sources = cmp.config.sources({
             ${writeIf cfg.completion.completeFromLSP ''{ name = "nvim_lsp" },''}
             ${writeIf cfg.completion.completeFromBuffer ''{ name = "luasnip" },''}
             ${writeIf cfg.completion.completeFromPath ''{ name = "buffer" },''}
             ${writeIf cfg.completion.completeFromLuaSnip ''{ name = "path" },''}
           }),
-          formatting = lspkind.cmp_format(),
+          formatting = {
+            format = lspkind.cmp_format()
+          },
           experimental = {
             ghost_text = { hl_group = "LspCodeLens" },
           },
@@ -228,7 +238,6 @@ in
             }, {}),
             f = require("mini.ai").gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
             c = require("mini.ai").gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
-            })
           },
         })
         
@@ -263,7 +272,7 @@ in
 
         local ic = vim.deepcopy(i)
         local ac = vim.deepcopy(a)
-        for key, name in pairs({ n  "Next", l = "Last" }) do
+        for key, name in pairs({ n = "Next", l = "Last" }) do
           i[key] = vim.tbl_extend("force", { name = "Inside " .. name .. " textobject" }, ic)
           a[key] = vim.tbl_extend("force", { name = "Around " .. name .. " textobject" }, ac)
         end

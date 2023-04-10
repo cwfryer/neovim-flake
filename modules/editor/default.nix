@@ -100,6 +100,7 @@ in
         follow_current_file = true,
       },
       window = {
+        width = 30,
         mappings = {
           ["<space>"] = "none",
         },
@@ -119,7 +120,7 @@ in
       "n",
       "<leader>fe",
       function()
-        require("neo-tree.command").execute({ toggle = true, dir = ..something.. })
+        require("neo-tree.command").execute({ toggle = true })
       end,
       { desc = "Explorer NeoTree (root dir)" }
     )
@@ -187,19 +188,19 @@ in
     map("n","<leader>,", "<cmd>Telescope buffers show_all_buffers=true<cr>", { desc = "Switch Buffer" })
     map("n","<leader>/", function() require("telescope.builtin").live_grep() end, { desc = "Find in Files (Grep)" })
     map("n","<leader>:", "<cmd>Telescope command_history<cr>", { desc = "Command History" })
-    map("n","<leader><space>", function() require("telescope.builtin").fd({root}) .end, { desc = "Find Files (root dir)" })
+    map("n","<leader><space>", function() require("telescope.builtin").fd({root}) end, { desc = "Find Files (root dir)" })
     -- Telescope find keys
     map("n","<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Buffers" })
-    map("n","<leader>ff", function() require("telescope.builtin").fd({root}), { desc = "Find Files (root dir)" })
-    map("n","<leader>fF", function() require("telescope.builtin").fd({cwd}), { desc = "Find Files (cwd)" })
+    map("n","<leader>ff", function() require("telescope.builtin").fd({root}) end, { desc = "Find Files (root dir)" })
+    map("n","<leader>fF", function() require("telescope.builtin").fd({cwd}) end, { desc = "Find Files (cwd)" })
     map("n","<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Recent" })
     -- Telescope git keys
     map("n","<leader>gc", "<cmd>Telescope git_commits<cr>", { desc = "commits" })
     map("n","<leader>gs", "<cmd>Telescope git_status<cr>", { desc = "status" })
     -- Telescope search keys
-    map("n","<leader>sa", "<cmd>Telescope autocommands", { desc = "Auto Commands" })
-    map("n","<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>"", { desc = "Buffer" })
-    map("n","<leader>sc", "<cmd>Telescope command_history<cr>"", { desc = "Command History" })
+    map("n","<leader>sa", "<cmd>Telescope autocommands<cr>", { desc = "Auto Commands" })
+    map("n","<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", { desc = "Buffer" })
+    map("n","<leader>sc", "<cmd>Telescope command_history<cr>", { desc = "Command History" })
     map("n","<leader>sC", "<cmd>Telescope commands<cr>", { desc = "Commands" })
     map("n","<leader>sd", "<cmd>Telescope diagnostics<cr>", { desc = "Diagnostics" })
     map("n","<leader>sg", function() require("telescope.builtin").live_grep({root}) end, { desc = "Grep (root dir)" })
@@ -218,7 +219,7 @@ in
       "n",
       "<leader>ss",
       function()
-        require("telescope.builtin").lsp_document_symbols(
+        require("telescope.builtin").lsp_document_symbols({
           symbols = {
             "Class",
             "Function",
@@ -231,7 +232,7 @@ in
             "Field",
             "Property",
           },
-        )
+        })
       end,
       { desc = "Goto Symbol" }
     )
@@ -260,7 +261,7 @@ in
     ${writeIf cfg.movement.enableFlit ''
     -- Movement setup: Flit
     require("flit").setup({
-      keys - { f = 'f', F = 'F', t = 't', T = 'T' }
+      keys = { f = 'f', F = 'F', t = 't', T = 'T' },
       labeled_modes = "nx",
     })
     ''}
@@ -283,22 +284,22 @@ in
       },
       on_attach = function(buffer)
         local gs = package.loaded.gitsigns
-        local function map(mode, l, r, desc)
+        local function gsmap(mode, l, r, desc)
           vim.keymap.set(mode, l, r, {buffer = buffer, desc = desc})
         end
 
-        map("n", "]h", gs.next_hunk, "Next Hunk")
-        map("n", "[h", gs.prev_hunk, "Prev Hunk")
-        map({"n","v"}, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
-        map({"n","v"}, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
-        map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
-        map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
-        map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
-        map("n", "<leader>ghp", gs.preview_hunk, "Preview Hunk")
-        map("n", "<leader>ghb", function() gs.blame_line({full=true}) end, "Blame Line")
-        map("n", "<leader>ghd", gs.diffthis, "Diff This")
-        map("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff This ~")
-        map({"o","x"}, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
+        gsmap("n", "]h", gs.next_hunk, "Next Hunk")
+        gsmap("n", "[h", gs.prev_hunk, "Prev Hunk")
+        gsmap({"n","v"}, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
+        gsmap({"n","v"}, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
+        gsmap("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
+        gsmap("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
+        gsmap("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
+        gsmap("n", "<leader>ghp", gs.preview_hunk, "Preview Hunk")
+        gsmap("n", "<leader>ghb", function() gs.blame_line({full=true}) end, "Blame Line")
+        gsmap("n", "<leader>ghd", gs.diffthis, "Diff This")
+        gsmap("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff This ~")
+        gsmap({"o","x"}, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
       end,
     })
     ''}
@@ -367,7 +368,7 @@ in
       { desc = "Next trouble/quickfix item" }
     )
     ''}
-    ${writeIf cfg.toggleterm ''
+    ${writeIf cfg.enableFloatingTerminal ''
     -- Toggleterm floating terminal
     require("toggleterm").setup{}
     -- Toggleterm keys

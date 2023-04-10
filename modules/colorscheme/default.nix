@@ -27,9 +27,9 @@ in
       (withPlugins cfg.transparent [ nvim-transparent ]);
     
     vim.configRC = ''
-      set background = dark
+      set background=dark
       ${writeIf (cfg.set == "oceanicnext") ''
-        colorscheme oceanicnext
+        colorscheme OceanicNext
       ''}
       ${writeIf (cfg.set == "tokyonight") ''
         colorscheme tokyonight-moon
@@ -42,7 +42,7 @@ in
     vim.luaConfigRC = ''
       ${writeIf cfg.transparent ''
         -- Enable transparency
-        require('transparent').setup({enable = true})
+        require('transparent').setup()
       ''}
     '';
   };

@@ -221,6 +221,10 @@
 			url = github:folke/noice.nvim;
 			flake = false;
 		};
+    nui = {
+      url = github:MunifTanjim/nui.nvim;
+      flake = false;
+    };
     alpha = {
 			url = github:goolord/alpha-nvim;
 			flake = false;
@@ -231,10 +235,6 @@
 		};
     nvim-web-devicons = {
 			url = github:nvim-tree/nvim-web-devicons;
-			flake = false;
-		};
-    nui = {
-			url = github:MunifTanjim/nui.nvim;
 			flake = false;
 		};
 

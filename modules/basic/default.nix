@@ -9,7 +9,7 @@ in
 {
   options.vim = {
     setLeader = mkOption {
-      type = types.string;
+      type = types.str;
       description = "Set the leader key";
     };
     autowrite = mkOption {
@@ -104,43 +104,49 @@ in
 			type = types.bool;
 			description = "Wrap lines that go past the sides";
 		};
+
+    customPlugins = mkOption {
+      type = types.listOf types.package;
+      default = [ ];
+      description = "List of additional plugins";
+    };
   };
 
   config = {
-    setLeader = mkDefault " ";
-    autowrite = mkDefault true;
-    useSystemClipboard = mkDefault true;
-    hideMarkup = mkDefault true;
-    confirmToSave = mkDefault true;
-    highlightHoveredLine = mkDefault true;
-    expandTabs = mkDefault true;
-    searchIgnoresCase = mkDefault true;
-    previewSubstitute = mkDefault true;
-    showInvisibleCharacters = mkDefault true;
-    enableMouseMode = mkDefault true;
-    showLineNumber = mkDefault true;
-    relativeLineNumber = mkDefault true;
-    scrollOffset = mkDefault 4;
-    roundIndents = mkDefault true;
-    indentSize = mkDefault 2;
-    sideScrollOffset = mkDefault 8;
-    useSmartCase = mkDefault true;
-    useSmartIndent = mkDefault true;
-    vSplitGoesBelow = mkDefault true;
-    hSplitGoesRight = mkDefault true;
-    colorTerm = mkDefault true;
-    useUndoFile = mkDefault true;
-    lineWrap = mkDefault false;
+    vim.setLeader = mkDefault " ";
+    vim.autowrite = mkDefault true;
+    vim.useSystemClipboard = mkDefault true;
+    vim.hideMarkup = mkDefault true;
+    vim.confirmToSave = mkDefault true;
+    vim.highlightHoveredLine = mkDefault true;
+    vim.expandTabs = mkDefault true;
+    vim.searchIgnoresCase = mkDefault true;
+    vim.previewSubstitute = mkDefault true;
+    vim.showInvisibleCharacters = mkDefault true;
+    vim.enableMouseMode = mkDefault true;
+    vim.showLineNumber = mkDefault true;
+    vim.relativeLineNumber = mkDefault true;
+    vim.scrollOffset = mkDefault 4;
+    vim.roundIndents = mkDefault true;
+    vim.indentSize = mkDefault 2;
+    vim.sideScrollOffset = mkDefault 8;
+    vim.useSmartCase = mkDefault true;
+    vim.useSmartIndent = mkDefault true;
+    vim.vSplitGoesBelow = mkDefault true;
+    vim.hSplitGoesRight = mkDefault true;
+    vim.colorTerm = mkDefault true;
+    vim.useUndoFile = mkDefault true;
+    vim.lineWrap = mkDefault false;
 
-    vim.startPlugins = [ plenary ] ++ cfg.customPlugins;
+    vim.startPlugins = [ pkgs.neovimPlugins.plenary ] ++ cfg.customPlugins;
 
     vim.startConfigRC = ''
     " ---------------------------------
     " Basic init.vim Settings
     " ---------------------------------
-    let mapleader=${toString cfg.setLeader}
+    let mapleader="${toString cfg.setLeader}"
     ${writeIf cfg.autowrite ''
-    set autowrite = true
+    set autowrite
 		''}
     ${writeIf cfg.useSystemClipboard ''
     set clipboard=unnamedplus
@@ -273,7 +279,7 @@ in
     ${if cfg.ui.uiAdditions.bufferline then ''
     map("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
     map("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
-    map("n", "[b", "<cmd>BufferLineCyclePrev<cr>, { desc = "Prev buffer" })
+    map("n", "[b", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer" })
     map("n", "]b", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer" })
     '' else ''
     map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
@@ -319,7 +325,6 @@ in
     map("v", ">", ">gv")
 
     map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
-
     map("n", "<leader>xl", "<cmd>lopen<cr>", { desc = "Location List" })
     map("n", "<leader>xq", "<cmd>copen<cr>", { desc = "Quickfix List" })
 
@@ -428,7 +433,7 @@ in
     end
 
     -- Check if we need to reload the file when it changed
-    vim.api.nvim_create_autocmd({ "FocusGained", "TermClosed", "TermLeave" }, {
+    vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
       group = augroup("checktime"),
       command = "checktime",
     })
@@ -453,7 +458,7 @@ in
     vim.api.nvim_create_autocmd({"BufReadPost"}, {
       group = augroup("last_loc"),
       callback = function()
-        local mark = vim.api.nvim_buf_get_mark(0<'"')
+        local mark = vim.api.nvim_buf_get_mark(0,'"')
         local lcount = vim.api.nvim_buf_line_count(0)
         if mark[1] > 0 and mark[1] <= lcount then
           pcall(vim.api.nvim_win_set_cursor, 0, mark)
@@ -476,11 +481,11 @@ in
         "startuptime",
         "tsplayground",
       },
-      callback = function()
+      callback = function(event)
         vim.bo[event.buf].buflisted = false
         vim.keymap.set("n", "q", "<cmd>close<cr>", {buffer=event.buf, silent=true})
       end,
-    )}
+    })
 
     -- wrap and check for spell in text filetypes
     vim.api.nvim_create_autocmd({"FileType"}, {
@@ -490,7 +495,7 @@ in
         vim.opt_local.wrap = true
         vim.opt_local.spell = true
       end,
-    )}
+    })
     '';
   };
 }

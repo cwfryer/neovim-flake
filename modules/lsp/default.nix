@@ -67,6 +67,8 @@ in
   config = mkIf cfg.enable {
     vim.startPlugins = with pkgs.neovimPlugins; 
       [ nvim-lspconfig null-ls ] ++
+      (withPlugins cfg.extras.neoconf[ neoconf ]) ++
+      (withPlugins cfg.extras.neodev [ neodev ]) ++
       (withPlugins cfg.languages.rust [ crates-nvim rust-tools ]);
 
     vim.luaConfigRC = ''
@@ -88,7 +90,7 @@ in
     -- Utility function to trigger formatting based on format engine
     function format()
       local buf = vim.api.nvim_get_current_buf()
-      if vim.b.autoformat = false then
+      if vim.b.autoformat == false then
         return
       end
       local ft = vim.bo[buf].filetype
@@ -107,57 +109,56 @@ in
 
     -- Utility function to set keymaps by LSP-active buffer
     local attach_keymaps = function(client, bufnr)
-      local opts = { noremap=true, silent=true }
-
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>cd', vim.diagnostic.open_float, {desc="Line Diagnostics",table.unpack(opts)})
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>cl', '<cmd>LspInfo<CR>', {desc="LSP Info",table.unpack(opts)})
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>Telescope lsp_definitions<CR>', {desc="Goto Definition",table.unpack(opts)})
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>Telescope lsp_references<CR>', {desc="References",table.unpack(opts)})
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', vim.lsp.buf.declaration, {desc="Goto Declaration",table.unpack(opts)})
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gI', '<cmd>Telescope lsp_implementations<CR>', {desc="Goto Implementation",table.unpack(opts)})
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gt', '<cmd>Telescope lsp_type_definitions<CR>', {desc="Goto Type Definition",table.unpack(opts)})
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', vim.lsp.buf.hover, {desc="Hover",table.unpack(opts)})
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gK', vim.lsp.buf.signature_help, {desc="Signature Help",table.unpack(opts)})
-      vim.api.nvim_buf_set_keymap(bufnr, 'i', '<c-k>', vim.lsp.buf.signature_help, {desc="Signature Help",table.unpack(opts)})
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', ']d', diagnostic_goto(true), {desc="Next Diagnostic",table.unpack(opts)})
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '[d', diagnostic_goto(false), {desc="Prev Diagnostic",table.unpack(opts)})
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', ']e', diagnostic_goto(true, "ERROR"), {desc="Next Error",table.unpack(opts)})
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '[e', diagnostic_goto(false, "ERROR"), {desc="Prev Error",table.unpack(opts)})
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', ']w', diagnostic_goto(true, "WARN"), {desc="Next Warning",table.unpack(opts)})
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '[w', diagnostic_goto(false, "WARN"), {desc="Prev Warning",table.unpack(opts)})
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>cf', format(), {desc="Format Document",table.unpack(opts)})
-      vim.api.nvim_buf_set_keymap(bufnr, 'v', '<leader>cf', format(), {desc="Format Range",table.unpack(opts)})
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', vim.lsp.buf.code_action, {desc="",table.unpack(opts)})
-      vim.api.nvim_buf_set_keymap(bufnr, 
-        'n',
-        '<leader>cA',
+      map("n","<leader>cd",function() vim.diagnostic.open_float() end,{desc="Line Diagnostics",remap=false,silent=true,buffer=bufnr})
+      map("n","<leader>cl","<cmd>LspInfo<cr>",{desc="Lsp Info",remap=false,silent=true,buffer=bufnr})
+      map("n","gd","<cmd>Telescope lsp_definitions<cr>",{desc="Goto Definition",remap=false,silent=true,buffer=bufnr})
+      map("n","gr","<cmd>Telescope lsp_references<cr>",{desc="References",remap=false,silent=true,buffer=bufnr})
+      map("n","gD",function() vim.lsp.buf.declaration() end,{desc="Goto Declaration",remap=false,silent=true,buffer=bufnr})
+      map("n","gI","<cmd>Telescope lsp_implementations<cr>",{desc="Goto Implementation",remap=false,silent=true,buffer=bufnr})
+      map("n","gt","<cmd>Telescope lsp_type_definitions<cr>",{desc="Goto Type Definition",remap=false,silent=true,buffer=bufnr})
+      map("n","K",function() vim.lsp.buf.hover() end,{desc="Hover",remap=false,silent=true,buffer=bufnr})
+      map("n","gK",function() vim.lsp.buf.signature_help() end,{desc="Signature Help",remap=false,silent=true,buffer=bufnr})
+      map("i","<c-k>",function() vim.lsp.buf.signature_help() end,{desc="Signature Help",remap=false,silent=true,buffer=bufnr})
+      map("n","]d",function() diagnostic_goto(true) end,{desc="Next Diagnostic",remap=false,silent=true,buffer=bufnr})
+      map("n","[d",function() diagnostic_goto(false) end,{desc="Prev Diagnostic",remap=false,silent=true,buffer=bufnr})
+      map("n","]e",function() diagnostic_goto(true, "ERROR") end,{desc="Next Error",remap=false,silent=true,buffer=bufnr})
+      map("n","[e",function() diagnostic_goto(false, "ERROR") end,{desc="Prev Error",remap=false,silent=true,buffer=bufnr})
+      map("n","]w",function() diagnostic_goto(true, "WARN") end,{desc="Next Warning",remap=false,silent=true,buffer=bufnr})
+      map("n","[w",function() diagnostic_goto(false, "WARN") end,{desc="Prev Warning",remap=false,silent=true,buffer=bufnr})
+      map("n","<leader>cf",function() format() end,{desc="Format Document",remap=false,silent=true,buffer=bufnr})
+      map("v","<leader>cf",function() format() end,{desc="Format Range",remap=false,silent=true,buffer=bufnr})
+      map("n","<leader>ca",function() vim.lsp.buf.code_action() end,{desc="Code Action",remap=false,silent=true,buffer=bufnr})
+      map(
+        "n",
+        "<leader>cA",
         function()
           vim.lsp.buf.code_action({
             context = {
               only = {
-                "source"
+                "source",
               },
               diagnostics = {},
-            }
+            },
           })
         end,
-        {desc="Code Action",table.unpack(opts)}
-      )
+        {desc="Source Action",remap=false,silent=true,buffer=bufnr})
     end
 
+    -- TODO is this even necessary?
     -- Auto set keys when Lsp server attaches
-    vim.api.nvim_create_autocmd("LspAttach", {
-      callback = function(args)
-        local buffer = args.buf
-        local client = vim.lsp.get_client_by_id(args.data.client_id)
-        attach_keymaps(client, buffer)
-      end,
-    })
+    -- vim.api.nvim_create_autocmd("LspAttach", {
+    --   callback = function(args)
+    --     local buffer = args.buf
+    --     local client = vim.lsp.get_client_by_id(args.data.client_id)
+    --     attach_keymaps(client, buffer)
+    --   end,
+    -- })
 
     -- Auto format autocommand to be used by null-ls
+    local nls_augroup = vim.api.nvim_create_augroup("LspFormatting", {})
     format_callback = function(client, bufnr)
       vim.api.nvim_create_autocmd("BufWritePre", {
-        group = augroup,
+        group = nls_augroup,
         buffer = bufnr,
         callback = function()
           local params = require'vim.lsp.util'.make_formatting_params({})
@@ -181,26 +182,27 @@ in
 
       ${writeIf cfg.autoFormatting ''
       -- Enable null-ls
+      local null_ls = require("null-ls")
       require('null-ls').setup({
-        root_dir = require("null-ls.utlls").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git"),
+        root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git"),
         sources = {
-          null-ls.builtins.formatting.fish_indent.with({
+          null_ls.builtins.formatting.fish_indent.with({
             command = "${pkgs.fish}/bin/fish_indent";
           }),
-          null-ls.builtins.diagnostics.fish.with({
+          null_ls.builtins.diagnostics.fish.with({
             command = "${pkgs.fish}/bin/fish";
           }),
-          null-ls.builtins.formatting.stylua.with({
+          null_ls.builtins.formatting.stylua.with({
             command = "${pkgs.stylua}/bin/stylua";
           }),
-          null-ls.builtins.formatting.shfmt.with({
+          null_ls.builtins.formatting.shfmt.with({
             command = "${pkgs.shfmt}/bin/shfmt";
           }),
-          null-ls.builtins.formatting.flake8.with({
-            command = "${pkgs.python311Packages.flake8}/bin/flake8";
+          null_ls.builtins.formatting.black.with({
+            command = "${pkgs.black}/bin/black";
           }),
           ${writeIf cfg.languages.nix ''
-            null-ls.builtins.formatting.alejandra.with({
+            null_ls.builtins.formatting.alejandra.with({
               command = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt";
             })
           ''}
@@ -227,7 +229,7 @@ in
           server = {
             capabilities = capabilities,
             on_attach = default_on_attach,
-            cmd = ${"${pkgs.rust-analyzer}/bin/rust-analyzer"}
+            cmd = {"${pkgs.rust-analyzer}/bin/rust-analyzer"},
             settings = {
               ["rust-analyzer"] = {
                 experimental = {
@@ -261,7 +263,7 @@ in
         lspconfig.rnix.setup{
           capabilities = capabilities;
           on_attach = function(client, bufnr)
-            attach_keymaps()
+            attach_keymaps(client, bufnr)
           end,
           cmd = {"${pkgs.rnix-lsp}/bin/rnix-lsp"},
         }

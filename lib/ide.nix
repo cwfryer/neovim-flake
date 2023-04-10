@@ -83,7 +83,6 @@ let
           system = "noice.nvim";
           interfaces = true;
           icons = true;
-          components = true;
           indents = true;
         };
         uiAdditions = {
