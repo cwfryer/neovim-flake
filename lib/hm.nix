@@ -9,7 +9,7 @@ with lib; {
   meta.maintainers = [ maintainers.cfryer ];
 
   options.programs.neovim-ide = {
-    enable = mkEnableOption "NeoVim with LSP enabled for Haskell, Rust and more.";
+    enable = mkEnableOption "NeoVim with LazyVim config recreated in nix";
 
     settings = mkOption {
       type = types.attrsOf types.anything;

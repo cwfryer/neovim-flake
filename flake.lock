@@ -238,6 +238,22 @@
         "type": "github"
       }
     },
+    "inc-rename": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1680737971,
+        "narHash": "sha256-2D2jlDSeB2fy5/PK3M7aHk/X4Zv7esKPya3QOiH8GdI=",
+        "owner": "smjonas",
+        "repo": "inc-rename.nvim",
+        "rev": "fb1b7468f27d874feb209eac46be5205e20b7fd3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "smjonas",
+        "repo": "inc-rename.nvim",
+        "type": "github"
+      }
+    },
     "indent-blankline": {
       "flake": false,
       "locked": {
@@ -716,22 +732,6 @@
         "type": "github"
       }
     },
-    "nvim-treesitter": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1676823390,
-        "narHash": "sha256-rMYw+u5PoqcM6Q1mVMRjHPl43ivv1WQkGlDCRqkT7UE=",
-        "owner": "nvim-treesitter",
-        "repo": "nvim-treesitter",
-        "rev": "ce0dba96f47cd8bbd46b4c3ac8fd1b9502f1002a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nvim-treesitter",
-        "repo": "nvim-treesitter",
-        "type": "github"
-      }
-    },
     "nvim-treesitter-textobjects": {
       "flake": false,
       "locked": {
@@ -843,6 +843,7 @@
         "flit": "flit",
         "friendly-snippets": "friendly-snippets",
         "gitsigns": "gitsigns",
+        "inc-rename": "inc-rename",
         "indent-blankline": "indent-blankline",
         "leap": "leap",
         "lspkind": "lspkind",
@@ -871,7 +872,6 @@
         "nvim-notify": "nvim-notify",
         "nvim-spectre": "nvim-spectre",
         "nvim-transparent": "nvim-transparent",
-        "nvim-treesitter": "nvim-treesitter",
         "nvim-treesitter-textobjects": "nvim-treesitter-textobjects",
         "nvim-ts-commentstring": "nvim-ts-commentstring",
         "nvim-web-devicons": "nvim-web-devicons",
@@ -883,7 +883,6 @@
         "todo-comments": "todo-comments",
         "toggleterm": "toggleterm",
         "tokyonight": "tokyonight",
-        "tree-sitter": "tree-sitter",
         "trouble": "trouble",
         "vim-illuminate": "vim-illuminate",
         "which-key": "which-key"
@@ -966,22 +965,6 @@
       "original": {
         "owner": "folke",
         "repo": "tokyonight.nvim",
-        "type": "github"
-      }
-    },
-    "tree-sitter": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1680622638,
-        "narHash": "sha256-oy9zf6DvJHBWnVo/Ttkm5eq3Oy3FtoimODENNoxT8Kc=",
-        "owner": "tree-sitter",
-        "repo": "tree-sitter",
-        "rev": "c26dde041406cdb4e0b40e705fb5f8fac42935fb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "tree-sitter",
-        "repo": "tree-sitter",
         "type": "github"
       }
     },

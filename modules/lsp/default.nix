@@ -62,11 +62,16 @@ in
         default = false;
         description = "Enable typescript LSP Server";
       };
+      vimscript = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Enable vimscript LSP Server";
+      };
     };
   };
   config = mkIf cfg.enable {
     vim.startPlugins = with pkgs.neovimPlugins; 
-      [ nvim-lspconfig null-ls ] ++
+      [ nvim-lspconfig null-ls inc-rename ] ++
       (withPlugins cfg.extras.neoconf[ neoconf ]) ++
       (withPlugins cfg.extras.neodev [ neodev ]) ++
       (withPlugins cfg.languages.rust [ crates-nvim rust-tools ]);
@@ -77,6 +82,7 @@ in
     -- ---------------------------------------
 
     -- Global LSP options
+    require("inc_rename").setup()
 
     -- Utility function to goto by severity
     function diagnostic_goto(next, severity)
@@ -141,7 +147,16 @@ in
             },
           })
         end,
-        {desc="Source Action",remap=false,silent=true,buffer=bufnr})
+        {desc="Source Action",remap=false,silent=true,buffer=bufnr}
+      )
+      map(
+        "n",
+        "<leader>cr",
+        function()
+          return ":IncRename " .. vim.fn.expand("<cword>")
+        end,
+        {desc="Rename",expr = true}
+      )
     end
 
     -- TODO is this even necessary?
@@ -258,6 +273,25 @@ in
         }
       ''}
 
+      ${writeIf cfg.languages.lua ''
+        -- Lua config
+        lspconfig.lua_ls.setup{
+          settings = {
+            runtime = { version = "LuaJIT" },
+            diagnostics = {
+                globals = {"vim"}
+            },
+            workspace = {
+              library = vim.api.nvim_get_runtime_file("",true),
+            },
+            telemetry = { enable = false },
+          };
+          capabilities = capabilities;
+          on_attach = default_on_attach;
+          cmd = {"${pkgs.sumneko-lua-language-server}/bin/lua-language-server"},
+        }
+      ''}
+
       ${writeIf cfg.languages.nix ''
         -- Nix config
         lspconfig.rnix.setup{
@@ -286,6 +320,17 @@ in
             attach_keymaps(client, bufnr)
           end,
           cmd = { "${pkgs.nodePackages.typescript-language-server}/bin/typescript-language-server", "--stdio" }
+        }
+      ''}
+
+      ${writeIf cfg.languages.vimscript ''
+        -- Vimscript config
+        lspconfig.vimls.setup{
+          capabilities = capabilities;
+          on_attach = function(client, bufnr)
+            attach_keymaps(client, bufnr)
+          end,
+          cmd = { "${pkgs.nodePackages.vim-language-server}/bin/vim-language-server", "--stdio" }
         }
       ''}
     '';

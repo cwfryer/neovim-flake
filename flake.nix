@@ -9,11 +9,6 @@
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
-    tree-sitter = {
-      url = github:tree-sitter/tree-sitter;
-      flake = false;
-    };
-
     #-------------------------------------
     # Coding Plugins
     #-------------------------------------
@@ -177,14 +172,18 @@
       url = github:simrat39/rust-tools.nvim;
       flake = false;
     };
+    inc-rename = {
+      url = github:smjonas/inc-rename.nvim;
+      flake = false;
+    };
 
     #-------------------------------------
     # Treesitter Plugins
     #-------------------------------------
-    nvim-treesitter = {
-			url = github:nvim-treesitter/nvim-treesitter;
-			flake = false;
-		};
+		/* nvim-treesitter = { */
+		/* 	url = github:nvim-treesitter/nvim-treesitter; */
+		/* 	flake = false; */
+		/* }; */
     nvim-treesitter-textobjects = {
 			url = github:nvim-treesitter/nvim-treesitter-textobjects;
 			flake = false;

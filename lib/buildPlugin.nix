@@ -8,15 +8,7 @@ with builtins;
 let
   inherit (prev.vimUtils) buildVimPluginFrom2Nix;
 
-  ts = prev.tree-sitter.override {
-    # extraGrammars = {
-    #   tree-sitter-scala = final.tree-sitter-scala-master;
-    #   tree-sitter-tsx = final.tree-sitter-tsx-master;
-    #   tree-sitter-typescript = final.tree-sitter-tsx-master;
-    # };
-  };
-
-  treesitterGrammars = ts.withPlugins (p: [
+  treeSitterPlug = pkgs.vimPlugins.nvim-treesitter.withPlugins (p: [
     p.tree-sitter-c
     p.tree-sitter-nix
     p.tree-sitter-python
@@ -33,26 +25,22 @@ let
     p.tree-sitter-graphql
     p.tree-sitter-json
     p.tree-sitter-go
+    p.tree-sitter-lua
+    p.tree-sitter-markdown-inline
+    p.tree-sitter-bash
+    p.tree-sitter-regex
+    p.tree-sitter-vim
   ]);
-
-  tsPostPatchHook = ''
-    rm -r parser
-    ln -s ${treesitterGrammars} parser
-  '';
 
   buildPlug = name:
     buildVimPluginFrom2Nix {
       pname = name;
       version = "master";
       src = builtins.getAttr name inputs;
-      postPatch = ''
-        ${writeIf (name == "nvim-treesitter") tsPostPatchHook}
-      '';
     };
 
   vimPlugins = {
-    inherit (pkgs.vimPlugins) nerdcommenter;
-    # inherit vim-scala3;
+    inherit treeSitterPlug;
   };
 in
 {

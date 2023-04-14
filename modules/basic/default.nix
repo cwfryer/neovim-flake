@@ -166,7 +166,6 @@ in
 		''}
     set formatoptions=jcroqlnt
     set grepformat=%f:%l:%c:%m
-    set grepprg=rg --vimgrep
     ${writeIf cfg.searchIgnoresCase ''
     set ignorecase
 		''}
@@ -233,6 +232,7 @@ in
     -- ---------------------------------
     -- Basic init.lua settings
     -- ---------------------------------
+    vim.opt.grepprg = "rg --vimgrep"
     vim.opt.shortmess:append { W = true, I = true, c = true }
 
     if vim.fn.has("nvim-0.9.0") == 1 then
@@ -314,8 +314,8 @@ in
 
     -- Add undo break-points
     map("i", ",", ",<c-g>u")
-    map("i", ".", ",<c-g>u")
-    map("i", ";", ",<c-g>u")
+    map("i", ".", ".<c-g>u")
+    map("i", ";", ";<c-g>u")
 
     -- save file
     map({ "i", "v", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
@@ -357,50 +357,46 @@ in
       { desc = "Toggle Conceal" }
     )
 
-    -- Temp Remove Line
-    -- ------------------------------------------
-    -- -- Toggleterm terminal setup
-    -- local function mkTerminal(cmd,dir,hidden)
-    --   local Terminal = require("toggleterm.terminal").Terminal
-    --   local t = Terminal:new({
-    --     direction = "float",
-    --     on_open = function(term)
-    --       vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", {noremap=true, silent=true})
-    --     end,
-    --   })
-    --   if cmd then t.cmd = cmd end
-    --   if dir then t.dir = dir end
-    --   if hidden then t.hidden = true end
+    -- Toggleterm terminal setup
+    local function mkTerminal(cmd,dir,hidden)
+      local Terminal = require("toggleterm.terminal").Terminal
+      local opts = {
+        direction = "float",
+        op_open = function(term)
+          vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", {noremap=true, silent=true})
+        end
+      }
+      if not (cmd == nil) then opts.cmd = cmd end
+      if not (dir == nil) then opts.dir = dir end
+      if hidden then opts.hidden = true end
+      local t = Terminal:new(opts)
+      return t
+    end
+    local root_lazygit = mkTerminal("lazygit","git_dir",true)
+    function _root_lg_toggle()
+      root_lazygit:toggle()
+    end
+    local cwd_lazygit = mkTerminal("lazygit",nil,true)
+    function _cwd_lg_toggle()
+      cwd_lazygit:toggle()
+    end
+    local root_term = mkTerminal(nil,"git_dir",false)
+    function _root_term_toggle()
+      root_term:toggle()
+    end
+    local cwd_term = mkTerminal(nil,nil,false)
+    function _cwd_term_toggle()
+      cwd_term:toggle()
+    end
 
-    --   return t
-    -- end
-    -- local root_lazygit = mkTerminal("lazygit","git_dir",true)
-    -- function _root_lg_toggle()
-    --   root_lazygit:toggle()
-    -- end
-    -- local cwd_lazygit = mkTerminal("lazygit",,true)
-    -- function _cwd_lg_toggle()
-    --   cwd_lazygit:toggle()
-    -- end
-    -- local root_term = mkTerminal(,"git_dir",false)
-    -- function _root_term_toggle()
-    --   root_term:toggle()
-    -- end
-    -- local cwd_term = mkTerminal(,,false)
-    -- function _cwd_term_toggle()
-    --   cwd_term:toggle()
-    -- end
+    -- Lazygit in floating terminal
+    map("n", "<leader>gg", "<cmd>lua _root_lg_toggle()<cr>", { desc = "Lazygit (root dir)" })
+    map("n", "<leader>gG", "<cmd>lua _cwd_lg_toggle()<cr>", { desc = "Lazygit (cwd)" })
 
-    -- -- Lazygit in floating terminal
-    -- map("n", "<leader>gg", "<cmd>lua _root_lg_toggle()", { desc = "Lazygit (root dir)" })
-    -- map("n", "<leader>gG", "<cmd>lua _cwd_lg_toggle()", { desc = "Lazygit (cwd)" })
-
-    -- -- Floating terminal
-    -- map("n", "<leader>ft", "<cmd>lua _root_term_toggle()", { desc = "Terminal (root dir)" })
-    -- map("n", "<leader>fT", "<cmd>lua _cwd_term_toggle()", { desc = "Terminal (cwd)" })
-    -- map("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter normal mode" })
-    -- Temp Remove Line
-    -- ------------------------------------------
+    -- Floating terminal
+    map("n", "<leader>ft", "<cmd>lua _root_term_toggle()<cr>", { desc = "Terminal (root dir)" })
+    map("n", "<leader>fT", "<cmd>lua _cwd_term_toggle()<cr>", { desc = "Terminal (cwd)" })
+    map("t", "<esc><esc>", "<c-\\><c-n>", { desc = "Enter normal mode" })
 
     map("n", "<leader>qq", "<cmd>qa<CR>", { desc = "Quit all" })
 
