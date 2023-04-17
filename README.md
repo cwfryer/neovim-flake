@@ -6,6 +6,14 @@ It is usable as a nixpkgs overlay, a home-manager module, or as a stand-alone ni
 This is a bit of an experiment as a personal project. I am unlikely to fix any issues, beyond ones that affect me personally.
 
 ![screenshot-1](./screenshot_1.png)
+
+## Credits
+Mostly based on Gabriel Volpe's [neovim-flake](https://github.com/gvolpe/neovim-flake).
+Which was based on Jordan Isaacs' [neovim-flake](https://github.com/jordanisaacs/neovim-flake), which was based on Wil Taylor's [neovim-flake](https://github.com/wiltaylor/neovim-flake).
+
+All 3 of these are great references to see how to use a flake to build your flavor of Neovim.
+The vim configuration is largely based on the oustanding [LazyVim](https://www.lazyvim.org).
+
 ## Documentation
 ### try it out
 ```
@@ -56,7 +64,7 @@ Add the input flake:
 ```
 {
   neovim-flake = {
-    url = github:gvolpe/neovim-flake;
+    url = github:cwfryer/neovim-flake;
     inputs.nixpkgs.follows = "nixpkgs";
   };
 }
@@ -78,9 +86,3 @@ Add the module to your home-manager config:
   }
 }
 ```
-## Credits
-Mostly based on Gabriel Volpe's [neovim-flake](https://github.com/gvolpe/neovim-flake).
-Which was based on Jordan Isaacs' [neovim-flake](https://github.com/jordanisaacs/neovim-flake), which was based on Wil Taylor's [neovim-flake](https://github.com/wiltaylor/neovim-flake).
-
-All 3 of these are great references to see how to use a flake to build your flavor of Neovim.
-The vim configuration is largely based on the oustanding [LazyVim](https://www.lazyvim.org).

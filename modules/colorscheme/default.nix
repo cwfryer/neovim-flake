@@ -44,6 +44,7 @@ in
         -- Enable transparency
         require('transparent').setup()
       ''}
+      map("n", "<leader>ut", "<cmd>TransparentToggle<cr>", { desc = "Toggle Transparency" })
     '';
   };
 }
