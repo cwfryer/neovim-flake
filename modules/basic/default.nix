@@ -476,6 +476,7 @@ in
         "spectre_panel",
         "startuptime",
         "tsplayground",
+        "toggleterm",
       },
       callback = function(event)
         vim.bo[event.buf].buflisted = false
