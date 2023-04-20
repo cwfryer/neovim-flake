@@ -1,15 +1,16 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-with builtins;
-
-let
-  cfg = config.vim.colorscheme;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib;
+with builtins; let
+  cfg = config.vim.colorscheme;
+in {
   options.vim.colorscheme = {
     set = mkOption {
-      type = types.enum [ "catppuccin" "tokyonight" "oceanicnext" ];
+      type = types.enum ["catppuccin" "tokyonight" "oceanicnext"];
       default = "oceanicnext";
       description = "Choose colorscheme (catppuccin, tokyonight, oceanicnext)";
     };
@@ -21,11 +22,11 @@ in
   };
   config = {
     vim.startPlugins = with pkgs.neovimPlugins;
-      (withPlugins (cfg.set == "catppuccin") [ catppuccin ]) ++
-      (withPlugins (cfg.set == "tokyonight") [ tokyonight ]) ++
-      (withPlugins (cfg.set == "oceanicnext") [ oceanicnext ]) ++
-      (withPlugins cfg.transparent [ nvim-transparent ]);
-    
+      (withPlugins (cfg.set == "catppuccin") [catppuccin])
+      ++ (withPlugins (cfg.set == "tokyonight") [tokyonight])
+      ++ (withPlugins (cfg.set == "oceanicnext") [oceanicnext])
+      ++ (withPlugins cfg.transparent [nvim-transparent]);
+
     vim.configRC = ''
       set background=dark
       ${writeIf (cfg.set == "oceanicnext") ''

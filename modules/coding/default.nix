@@ -1,12 +1,13 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-with builtins;
-
-let
-  cfg = config.vim.coding;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib;
+with builtins; let
+  cfg = config.vim.coding;
+in {
   options.vim.coding = {
     enable = mkOption {
       type = types.bool;
@@ -86,56 +87,55 @@ in
         description = "Enable improved A and I text selection";
       };
     };
-
   };
   config = mkIf cfg.enable {
-    vim.startPlugins = with pkgs.neovimPlugins; 
-    (withPlugins cfg.snippets.enable [lua-snip]) ++
-    (withPlugins cfg.snippets.useFriendlySnippets [friendly-snippets]) ++
-    (withPlugins cfg.completion.enable [nvim-cmp lspkind]) ++
-    (withPlugins cfg.completion.completeFromLSP [cmp-nvim-lsp]) ++
-    (withPlugins cfg.completion.completeFromBuffer [cmp-buffer]) ++
-    (withPlugins cfg.completion.completeFromPath [cmp-path]) ++
-    (withPlugins cfg.completion.completeFromLuaSnip [cmp-luasnip]) ++
-    (withPlugins cfg.helpers.autoPair [mini-pairs]) ++
-    (withPlugins cfg.helpers.surround [mini-surround]) ++
-    (withPlugins cfg.helpers.comment.enable [mini-comment]) ++
-    (withPlugins cfg.helpers.comment.useTreeSitterContext [nvim-ts-commentstring]) ++
-    (withPlugins cfg.helpers.betterAISelection [mini-ai]);
+    vim.startPlugins = with pkgs.neovimPlugins;
+      (withPlugins cfg.snippets.enable [lua-snip])
+      ++ (withPlugins cfg.snippets.useFriendlySnippets [friendly-snippets])
+      ++ (withPlugins cfg.completion.enable [nvim-cmp lspkind])
+      ++ (withPlugins cfg.completion.completeFromLSP [cmp-nvim-lsp])
+      ++ (withPlugins cfg.completion.completeFromBuffer [cmp-buffer])
+      ++ (withPlugins cfg.completion.completeFromPath [cmp-path])
+      ++ (withPlugins cfg.completion.completeFromLuaSnip [cmp-luasnip])
+      ++ (withPlugins cfg.helpers.autoPair [mini-pairs])
+      ++ (withPlugins cfg.helpers.surround [mini-surround])
+      ++ (withPlugins cfg.helpers.comment.enable [mini-comment])
+      ++ (withPlugins cfg.helpers.comment.useTreeSitterContext [nvim-ts-commentstring])
+      ++ (withPlugins cfg.helpers.betterAISelection [mini-ai]);
 
     vim.luaConfigRC = ''
-    -- ---------------------------------------
-    -- Coding Config
-    -- ---------------------------------------
-      ${writeIf cfg.completion.useSuperTab ''
-      local has_words_before = function()
-        unpack = unpack or table.unpack
-        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line-1, line, true)[1]:sub(col, col):match("%s") == nil
-      end
+      -- ---------------------------------------
+      -- Coding Config
+      -- ---------------------------------------
+        ${writeIf cfg.completion.useSuperTab ''
+        local has_words_before = function()
+          unpack = unpack or table.unpack
+          local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+          return col ~= 0 and vim.api.nvim_buf_get_lines(0, line-1, line, true)[1]:sub(col, col):match("%s") == nil
+        end
       ''}
-      ${writeIf cfg.snippets.enable ''
-      -- Luasnip config
-        require'luasnip'.setup({
-          history = true,
-          delete_check_events = "TextChanged",
-        })
-        ${writeIf cfg.snippets.useFriendlySnippets ''
+        ${writeIf cfg.snippets.enable ''
+        -- Luasnip config
+          require'luasnip'.setup({
+            history = true,
+            delete_check_events = "TextChanged",
+          })
+          ${writeIf cfg.snippets.useFriendlySnippets ''
           require("luasnip.loaders.from_vscode").lazy_load()
         ''}
-        --Luasnip keys
-        map(
-          "i",
-          "<tab>",
-          function()
-            return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
-          end,
-          {expr=true,silent=true}
-        )
-        map("s","<tab>", function() require("luasnip").jump(1) end)
-        map({"i","s"},"<s-tab>", function() require("luasnip").jump(-1) end)
+          --Luasnip keys
+          map(
+            "i",
+            "<tab>",
+            function()
+              return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
+            end,
+            {expr=true,silent=true}
+          )
+          map("s","<tab>", function() require("luasnip").jump(1) end)
+          map({"i","s"},"<s-tab>", function() require("luasnip").jump(-1) end)
       ''}
-      ${writeIf cfg.completion.enable ''
+        ${writeIf cfg.completion.enable ''
         local cmp = require'cmp'
         local lspkind = require'lspkind'
         cmp.setup({
@@ -147,7 +147,9 @@ in
               require("luasnip").lsp_expand(args.body)
             end,
           },
-          ${if cfg.completion.useSuperTab then ''
+          ${
+          if cfg.completion.useSuperTab
+          then ''
             mapping = {
               ["<Tab>"] = cmp.mapping(function(fallback)
                 if cmp.visible() then
@@ -171,7 +173,8 @@ in
                 end
               end, { "i", "s" }),
             },
-          '' else ''
+          ''
+          else ''
             mapping = cmp.mapping.preset.insert({
               ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
               ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
@@ -185,7 +188,8 @@ in
                 select = true,
               }),
             }),
-          ''}
+          ''
+        }
           sources = cmp.config.sources({
             ${writeIf cfg.completion.completeFromLSP ''{ name = "nvim_lsp" },''}
             ${writeIf cfg.completion.completeFromBuffer ''{ name = "luasnip" },''}
@@ -200,10 +204,10 @@ in
           },
         })
       ''}
-      ${writeIf cfg.helpers.autoPair ''
+        ${writeIf cfg.helpers.autoPair ''
         require("mini.pairs").setup()
       ''}
-      ${writeIf cfg.helpers.surround ''
+        ${writeIf cfg.helpers.surround ''
         require("mini.surround").setup({
           mappings = {
             add = "gza",
@@ -216,18 +220,18 @@ in
           };
         })
       ''}
-      ${writeIf cfg.helpers.comment.enable ''
+        ${writeIf cfg.helpers.comment.enable ''
         require("mini.comment").setup({
           ${writeIf cfg.helpers.comment.useTreeSitterContext ''
-            hooks = {
-              pre = function()
-                require("ts_context_commentstring.internal").update_commentstring({})
-              end,
-            },
-          ''}
+          hooks = {
+            pre = function()
+              require("ts_context_commentstring.internal").update_commentstring({})
+            end,
+          },
+        ''}
         })
       ''}
-      ${writeIf cfg.helpers.betterAISelection ''
+        ${writeIf cfg.helpers.betterAISelection ''
         -- mini.ai config
         require("mini.ai").setup({
           n_lines = 500,
@@ -240,7 +244,7 @@ in
             c = require("mini.ai").gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
           },
         })
-        
+
         -- mini.ai keys
         local i = {
           [" "] = "Whitespace",

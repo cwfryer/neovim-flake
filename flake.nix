@@ -13,73 +13,73 @@
     # Coding Plugins
     #-------------------------------------
     lua-snip = {
-			url = github:L3MON4D3/LuaSnip;
-			flake = false;
-		};
+      url = github:L3MON4D3/LuaSnip;
+      flake = false;
+    };
     friendly-snippets = {
-			url = github:rafamadriz/friendly-snippets;
-			flake = false;
-		};
+      url = github:rafamadriz/friendly-snippets;
+      flake = false;
+    };
     nvim-cmp = {
-			url = github:hrsh7th/nvim-cmp;
-			flake = false;
-		};
+      url = github:hrsh7th/nvim-cmp;
+      flake = false;
+    };
     cmp-nvim-lsp = {
-			url = github:hrsh7th/cmp-nvim-lsp;
-			flake = false;
-		};
+      url = github:hrsh7th/cmp-nvim-lsp;
+      flake = false;
+    };
     cmp-buffer = {
-			url = github:hrsh7th/cmp-buffer;
-			flake = false;
-		};
+      url = github:hrsh7th/cmp-buffer;
+      flake = false;
+    };
     cmp-path = {
-			url = github:hrsh7th/cmp-path;
-			flake = false;
-		};
+      url = github:hrsh7th/cmp-path;
+      flake = false;
+    };
     cmp-luasnip = {
-			url = github:saadparwaiz1/cmp_luasnip;
-			flake = false;
-		};
+      url = github:saadparwaiz1/cmp_luasnip;
+      flake = false;
+    };
     lspkind = {
       url = github:onsails/lspkind.nvim;
       flake = false;
     };
     mini-pairs = {
-			url = github:echasnovski/mini.pairs;
-			flake = false;
-		};
+      url = github:echasnovski/mini.pairs;
+      flake = false;
+    };
     mini-surround = {
-			url = github:echasnovski/mini.surround;
-			flake = false;
-		};
+      url = github:echasnovski/mini.surround;
+      flake = false;
+    };
     nvim-ts-commentstring = {
-			url = github:JoosepAlviste/nvim-ts-context-commentstring;
-			flake = false;
-		};
+      url = github:JoosepAlviste/nvim-ts-context-commentstring;
+      flake = false;
+    };
     mini-comment = {
-			url = github:echasnovski/mini.comment;
-			flake = false;
-		};
+      url = github:echasnovski/mini.comment;
+      flake = false;
+    };
     mini-ai = {
-			url = github:echasnovski/mini.ai;
-			flake = false;
-		};
+      url = github:echasnovski/mini.ai;
+      flake = false;
+    };
 
     #-------------------------------------
     # Colorscheme Plugins
     #-------------------------------------
     tokyonight = {
-			url = github:folke/tokyonight.nvim;
-			flake = false;
-		};
+      url = github:folke/tokyonight.nvim;
+      flake = false;
+    };
     catppuccin = {
-			url = github:catppuccin/nvim;
-			flake = false;
-		};
+      url = github:catppuccin/nvim;
+      flake = false;
+    };
     oceanicnext = {
-			url = github:mhartington/oceanic-next;
-			flake = false;
-		};
+      url = github:mhartington/oceanic-next;
+      flake = false;
+    };
     nvim-transparent = {
       url = github:xiyaowong/nvim-transparent;
       flake = false;
@@ -89,49 +89,49 @@
     # Editor Plugins
     #-------------------------------------
     neo-tree = {
-			url = github:nvim-neo-tree/neo-tree.nvim;
-			flake = false;
-		};
+      url = github:nvim-neo-tree/neo-tree.nvim;
+      flake = false;
+    };
     nvim-spectre = {
-			url = github:windwp/nvim-spectre;
-			flake = false;
-		};
+      url = github:windwp/nvim-spectre;
+      flake = false;
+    };
     telescope = {
-			url = github:nvim-telescope/telescope.nvim;
-			flake = false;
-		};
+      url = github:nvim-telescope/telescope.nvim;
+      flake = false;
+    };
     flit = {
-			url = github:ggandor/flit.nvim;
-			flake = false;
-		};
+      url = github:ggandor/flit.nvim;
+      flake = false;
+    };
     leap = {
-			url = github:ggandor/leap.nvim;
-			flake = false;
-		};
+      url = github:ggandor/leap.nvim;
+      flake = false;
+    };
     which-key = {
-			url = github:folke/which-key.nvim;
-			flake = false;
-		};
+      url = github:folke/which-key.nvim;
+      flake = false;
+    };
     gitsigns = {
-			url = github:lewis6991/gitsigns.nvim;
-			flake = false;
-		};
+      url = github:lewis6991/gitsigns.nvim;
+      flake = false;
+    };
     vim-illuminate = {
-			url = github:RRethy/vim-illuminate;
-			flake = false;
-		};
+      url = github:RRethy/vim-illuminate;
+      flake = false;
+    };
     mini-bufremove = {
-			url = github:echasnovski/mini.bufremove;
-			flake = false;
-		};
+      url = github:echasnovski/mini.bufremove;
+      flake = false;
+    };
     trouble = {
-			url = github:folke/trouble.nvim;
-			flake = false;
-		};
+      url = github:folke/trouble.nvim;
+      flake = false;
+    };
     todo-comments = {
-			url = github:folke/todo-comments.nvim;
-			flake = false;
-		};
+      url = github:folke/todo-comments.nvim;
+      flake = false;
+    };
     toggleterm = {
       url = github:akinsho/toggleterm.nvim;
       flake = false;
@@ -141,29 +141,29 @@
     # LSP Plugins
     #-------------------------------------
     nvim-lspconfig = {
-			url = github:neovim/nvim-lspconfig;
-			flake = false;
-		};
+      url = github:neovim/nvim-lspconfig;
+      flake = false;
+    };
     neoconf = {
-			url = github:folke/neoconf.nvim;
-			flake = false;
-		};
+      url = github:folke/neoconf.nvim;
+      flake = false;
+    };
     neodev = {
-			url = github:folke/neodev.nvim;
-			flake = false;
-		};
+      url = github:folke/neodev.nvim;
+      flake = false;
+    };
     mason-lspconfig = {
-			url = github:williamboman/mason-lspconfig.nvim;
-			flake = false;
-		};
+      url = github:williamboman/mason-lspconfig.nvim;
+      flake = false;
+    };
     null-ls = {
-			url = github:jose-elias-alvarez/null-ls.nvim;
-			flake = false;
-		};
+      url = github:jose-elias-alvarez/null-ls.nvim;
+      flake = false;
+    };
     mason = {
-			url = github:williamboman/mason.nvim;
-			flake = false;
-		}; # TODO is this needed?
+      url = github:williamboman/mason.nvim;
+      flake = false;
+    }; # TODO is this needed?
     crates-nvim = {
       url = github:Saecki/crates.nvim;
       flake = false;
@@ -180,105 +180,117 @@
     #-------------------------------------
     # Treesitter Plugins
     #-------------------------------------
-		/* nvim-treesitter = { */
-		/* 	url = github:nvim-treesitter/nvim-treesitter; */
-		/* 	flake = false; */
-		/* }; */
+    /*
+    nvim-treesitter = {
+    */
+    /*
+    url = github:nvim-treesitter/nvim-treesitter;
+    */
+    /*
+    flake = false;
+    */
+    /*
+    };
+    */
     nvim-treesitter-textobjects = {
-			url = github:nvim-treesitter/nvim-treesitter-textobjects;
-			flake = false;
-		};
+      url = github:nvim-treesitter/nvim-treesitter-textobjects;
+      flake = false;
+    };
 
     #-------------------------------------
     # UI Plugins
     #-------------------------------------
     nvim-notify = {
-			url = github:rcarriga/nvim-notify;
-			flake = false;
-		};
+      url = github:rcarriga/nvim-notify;
+      flake = false;
+    };
     dressing = {
-			url = github:stevearc/dressing.nvim;
-			flake = false;
-		};
+      url = github:stevearc/dressing.nvim;
+      flake = false;
+    };
     bufferline = {
-			url = github:akinsho/bufferline.nvim;
-			flake = false;
-		};
+      url = github:akinsho/bufferline.nvim;
+      flake = false;
+    };
     lualine = {
-			url = github:nvim-lualine/lualine.nvim;
-			flake = false;
-		};
+      url = github:nvim-lualine/lualine.nvim;
+      flake = false;
+    };
     indent-blankline = {
-			url = github:lukas-reineke/indent-blankline.nvim;
-			flake = false;
-		};
+      url = github:lukas-reineke/indent-blankline.nvim;
+      flake = false;
+    };
     mini-indentscope = {
-			url = github:echasnovski/mini.indentscope;
-			flake = false;
-		};
+      url = github:echasnovski/mini.indentscope;
+      flake = false;
+    };
     noice = {
-			url = github:folke/noice.nvim;
-			flake = false;
-		};
+      url = github:folke/noice.nvim;
+      flake = false;
+    };
     nui = {
       url = github:MunifTanjim/nui.nvim;
       flake = false;
     };
     alpha = {
-			url = github:goolord/alpha-nvim;
-			flake = false;
-		};
+      url = github:goolord/alpha-nvim;
+      flake = false;
+    };
     nvim-navic = {
-			url = github:SmiteshP/nvim-navic;
-			flake = false;
-		};
+      url = github:SmiteshP/nvim-navic;
+      flake = false;
+    };
     nvim-web-devicons = {
-			url = github:nvim-tree/nvim-web-devicons;
-			flake = false;
-		};
+      url = github:nvim-tree/nvim-web-devicons;
+      flake = false;
+    };
 
     #-------------------------------------
     # Utility Plugins
     #-------------------------------------
     persistence = {
-			url = github:folke/persistence.nvim;
-			flake = false;
-		};
+      url = github:folke/persistence.nvim;
+      flake = false;
+    };
     plenary = {
-			url = github:nvim-lua/plenary.nvim;
-			flake = false;
-		};
+      url = github:nvim-lua/plenary.nvim;
+      flake = false;
+    };
 
     #-------------------------------------
     # Extra Plugins
     #-------------------------------------
     # prettier = {
-		# 	url = github:;
-		# 	flake = false;
-		# };
+    # 	url = github:;
+    # 	flake = false;
+    # };
     mini-starter = {
-			url = github:echasnovski/mini.starter;
-			flake = false;
-		};
+      url = github:echasnovski/mini.starter;
+      flake = false;
+    };
   };
 
-  outputs = inputs @ { self, nixpkgs, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
-        plugins =
-          let
-            f = xs: pkgs.lib.attrsets.filterAttrs (k: v: !builtins.elem k xs);
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    flake-utils,
+    ...
+  }:
+    flake-utils.lib.eachDefaultSystem (
+      system: let
+        plugins = let
+          f = xs: pkgs.lib.attrsets.filterAttrs (k: v: !builtins.elem k xs);
 
-            nonPluginInputNames = [
-              "self"
-              "nixpkgs"
-              "flake-utils"
-              "neovim-nightly-flake"
-            ];
-          in
+          nonPluginInputNames = [
+            "self"
+            "nixpkgs"
+            "flake-utils"
+            "neovim-nightly-flake"
+          ];
+        in
           builtins.attrNames (f nonPluginInputNames inputs);
 
-        lib = import ./lib { inherit pkgs inputs plugins; };
+        lib = import ./lib {inherit pkgs inputs plugins;};
 
         inherit (lib) neovimBuilder;
 
@@ -304,16 +316,14 @@
 
         pkgs = import nixpkgs {
           inherit system;
-          config = { allowUnfree = true; };
-          overlays = [ libOverlay pluginOverlay neovimOverlay tsOverlay ];
+          config = {allowUnfree = true;};
+          overlays = [libOverlay pluginOverlay neovimOverlay tsOverlay];
         };
 
         default-ide = pkgs.callPackage ./lib/ide.nix {
           inherit pkgs neovimBuilder;
         };
-
-      in
-      rec {
+      in rec {
         apps = rec {
           nvim = {
             type = "app";
@@ -331,7 +341,7 @@
         nixosModules.hm = {
           imports = [
             ./lib/hm.nix
-            { nixpkgs.overlays = [ overlays.default ]; }
+            {nixpkgs.overlays = [overlays.default];}
           ];
         };
 
@@ -341,7 +351,7 @@
           # CI package
           inherit (pkgs.neovimPlugins) nvim-treesitter;
 
-          ide = default-ide.full.neovim;  # my personal config
+          ide = default-ide.full.neovim; # my personal config
           lazy = default-ide.lazy.neovim; # default lazyvim config
 
           # Neovim configuration files

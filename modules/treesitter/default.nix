@@ -1,12 +1,13 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-with builtins;
-
-let
-  cfg = config.vim.treesitter;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib;
+with builtins; let
+  cfg = config.vim.treesitter;
+in {
   options.vim.treesitter = {
     enable = mkOption {
       type = types.bool;
@@ -21,31 +22,31 @@ in
   };
   config = mkIf cfg.enable {
     vim.startPlugins = with pkgs.neovimPlugins;
-    [ treeSitterPlug ] ++
-    (withPlugins cfg.textobjects [nvim-treesitter-textobjects]);
+      [treeSitterPlug]
+      ++ (withPlugins cfg.textobjects [nvim-treesitter-textobjects]);
 
     vim.luaConfigRC = ''
-    -- ---------------------------------------
-    -- Treesitter config
-    -- ---------------------------------------
-      require'nvim-treesitter'.setup {
-        highlight = {
-          enable = true,
-        },
-        indent = {
-          enable = true,
-          disable = {"python"},
-        },
-        incremental_selection = {
-          enable = true,
-          keymaps = {
-            init_selection = "<C-space>",
-            node_incremental = "<C-space>",
-            scope_incremental = "<nop>",
-            node_decremental = "<bs>",
-          }
-        },
-        ${writeIf cfg.textobjects ''
+      -- ---------------------------------------
+      -- Treesitter config
+      -- ---------------------------------------
+        require'nvim-treesitter'.setup {
+          highlight = {
+            enable = true,
+          },
+          indent = {
+            enable = true,
+            disable = {"python"},
+          },
+          incremental_selection = {
+            enable = true,
+            keymaps = {
+              init_selection = "<C-space>",
+              node_incremental = "<C-space>",
+              scope_incremental = "<nop>",
+              node_decremental = "<bs>",
+            }
+          },
+          ${writeIf cfg.textobjects ''
         textobjects = {
           enable = true,
           swap = { enable = true, },
@@ -53,9 +54,9 @@ in
           move = { enable = true, },
           lsp_interop = { enable = true, },
         },
-        ''}
-        ensure_installed = {},
-      }
+      ''}
+          ensure_installed = {},
+        }
     '';
   };
 }

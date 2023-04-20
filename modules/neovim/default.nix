@@ -1,8 +1,10 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; {
   options.vim.neovim.package = mkOption {
     type = types.package;
     default = pkgs.neovim-unwrapped;
