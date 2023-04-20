@@ -372,13 +372,13 @@ in
       local t = Terminal:new(opts)
       return t
     end
-    local root_lazygit = mkTerminal("lazygit","git_dir",true)
+    local root_gitui = mkTerminal("${pkgs.gitui}/bin/gitui","git_dir",true)
     function _root_lg_toggle()
-      root_lazygit:toggle()
+      root_gitui:toggle()
     end
-    local cwd_lazygit = mkTerminal("lazygit",nil,true)
+    local cwd_gitui = mkTerminal("${pkgs.gitui}/bin/gitui",nil,true)
     function _cwd_lg_toggle()
-      cwd_lazygit:toggle()
+      cwd_gitui:toggle()
     end
     local root_term = mkTerminal(nil,"git_dir",false)
     function _root_term_toggle()
@@ -389,9 +389,9 @@ in
       cwd_term:toggle()
     end
 
-    -- Lazygit in floating terminal
-    map("n", "<leader>gg", "<cmd>lua _root_lg_toggle()<cr>", { desc = "Lazygit (root dir)" })
-    map("n", "<leader>gG", "<cmd>lua _cwd_lg_toggle()<cr>", { desc = "Lazygit (cwd)" })
+    -- gitui in floating terminal
+    map("n", "<leader>gg", "<cmd>lua _root_lg_toggle()<cr>", { desc = "gitui (root dir)" })
+    map("n", "<leader>gG", "<cmd>lua _cwd_lg_toggle()<cr>", { desc = "gitui (cwd)" })
 
     -- Floating terminal
     map("n", "<leader>ft", "<cmd>lua _root_term_toggle()<cr>", { desc = "Terminal (root dir)" })
