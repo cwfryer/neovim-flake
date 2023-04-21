@@ -107,14 +107,14 @@ in {
       -- ---------------------------------------
       -- Coding Config
       -- ---------------------------------------
-        ${writeIf cfg.completion.useSuperTab ''
+      ${writeIf cfg.completion.useSuperTab ''
         local has_words_before = function()
           unpack = unpack or table.unpack
           local line, col = unpack(vim.api.nvim_win_get_cursor(0))
           return col ~= 0 and vim.api.nvim_buf_get_lines(0, line-1, line, true)[1]:sub(col, col):match("%s") == nil
         end
       ''}
-        ${writeIf cfg.snippets.enable ''
+      ${writeIf cfg.snippets.enable ''
         -- Luasnip config
           require'luasnip'.setup({
             history = true,
@@ -123,6 +123,7 @@ in {
           ${writeIf cfg.snippets.useFriendlySnippets ''
           require("luasnip.loaders.from_vscode").lazy_load()
         ''}
+        ${writeIf (!cfg.completion.useSuperTab) ''
           --Luasnip keys
           map(
             "i",
@@ -134,8 +135,10 @@ in {
           )
           map("s","<tab>", function() require("luasnip").jump(1) end)
           map({"i","s"},"<s-tab>", function() require("luasnip").jump(-1) end)
+
+        ''}
       ''}
-        ${writeIf cfg.completion.enable ''
+      ${writeIf cfg.completion.enable ''
         local cmp = require'cmp'
         local lspkind = require'lspkind'
         cmp.setup({
@@ -172,6 +175,8 @@ in {
                   fallback()
                 end
               end, { "i", "s" }),
+
+              ["<CR>"] = cmp.mapping.confirm({ select = true }),
             },
           ''
           else ''
@@ -193,7 +198,7 @@ in {
           sources = cmp.config.sources({
             ${writeIf cfg.completion.completeFromLSP ''{ name = "nvim_lsp" },''}
             ${writeIf cfg.completion.completeFromBuffer ''{ name = "luasnip" },''}
-            ${writeIf cfg.completion.completeFromPath ''{ name = "buffer" },''}
+            ${writeIf cfg.completion.completeFromPath ''{ name = "buffer", keyword_length = 5 },''}
             ${writeIf cfg.completion.completeFromLuaSnip ''{ name = "path" },''}
           }),
           formatting = {

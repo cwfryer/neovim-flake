@@ -173,17 +173,17 @@ in {
       -- Auto format autocommand to be used by null-ls
       local nls_augroup = vim.api.nvim_create_augroup("LspFormatting", {})
       format_callback = function(client, bufnr)
-        if client.supports_method("textDocument/formatting")
+        if client.supports_method("textDocument/formatting") then
           vim.api.nvim_clear_autocmds({ group = nls_augroup, buffer = bufnr })
           vim.api.nvim_create_autocmd("BufWritePre", {
             group = nls_augroup,
             buffer = bufnr,
             callback = function()
               vim.lsp.buf.format({
-                bufnr = bufnr
+                bufnr = bufnr,
                 filter = function(client)
                   return client.name == "null-ls"
-                end
+                end,
               })
             end,
           })
