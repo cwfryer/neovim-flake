@@ -363,33 +363,38 @@ in {
       )
 
       -- Toggleterm terminal setup
-      local function mkTerminal(cmd,dir,hidden)
+      local function mkTerminal(cmd,dir,hidden,w,h)
         local Terminal = require("toggleterm.terminal").Terminal
         local opts = {
           direction = "float",
-          op_open = function(term)
+          float_opts = {
+
+          },
+          on_open = function(term)
             vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", {noremap=true, silent=true})
           end
         }
         if not (cmd == nil) then opts.cmd = cmd end
         if not (dir == nil) then opts.dir = dir end
         if hidden then opts.hidden = true end
+        if not (w == nil) then opts.float_opts.width = math.floor(w) end
+        if not (w == nil) then opts.float_opts.height = math.floor(h) end
         local t = Terminal:new(opts)
         return t
       end
-      local root_gitui = mkTerminal("${pkgs.gitui}/bin/gitui","git_dir",true)
+      local root_gitui = mkTerminal("${pkgs.gitui}/bin/gitui","git_dir",true,vim.o.columns * 0.9,vim.o.lines * 0.95)
       function _root_lg_toggle()
         root_gitui:toggle()
       end
-      local cwd_gitui = mkTerminal("${pkgs.gitui}/bin/gitui",nil,true)
+      local cwd_gitui = mkTerminal("${pkgs.gitui}/bin/gitui",nil,true,vim.o.columns * 0.9,vim.o.lines * 0.95)
       function _cwd_lg_toggle()
         cwd_gitui:toggle()
       end
-      local root_term = mkTerminal(nil,"git_dir",false)
+      local root_term = mkTerminal(nil,"git_dir",false,nil,nil)
       function _root_term_toggle()
         root_term:toggle()
       end
-      local cwd_term = mkTerminal(nil,nil,false)
+      local cwd_term = mkTerminal(nil,nil,false,nil,nil)
       function _cwd_term_toggle()
         cwd_term:toggle()
       end
