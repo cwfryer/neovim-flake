@@ -1,11 +1,12 @@
-{ pkgs, inputs, plugins, lib ? pkgs.lib, ... }:
-
-final: prev:
-
+{
+  pkgs,
+  inputs,
+  plugins,
+  lib ? pkgs.lib,
+  ...
+}: final: prev:
 with lib;
-with builtins;
-
-let
+with builtins; let
   inherit (prev.vimUtils) buildVimPluginFrom2Nix;
 
   treeSitterPlug = pkgs.vimPlugins.nvim-treesitter.withPlugins (p: [
@@ -30,6 +31,7 @@ let
     p.tree-sitter-bash
     p.tree-sitter-regex
     p.tree-sitter-vim
+    # TODO at some point tree-sitter-help will become tree-sitter-vimdoc
   ]);
 
   buildPlug = name:
@@ -42,11 +44,9 @@ let
   vimPlugins = {
     inherit treeSitterPlug;
   };
-in
-{
-  neovimPlugins =
-    let
-      xs = listToAttrs (map (n: nameValuePair n (buildPlug n)) plugins);
-    in
+in {
+  neovimPlugins = let
+    xs = listToAttrs (map (n: nameValuePair n (buildPlug n)) plugins);
+  in
     xs // vimPlugins;
 }

@@ -122,7 +122,7 @@ in {
         map("n","gr","<cmd>Telescope lsp_references<cr>",{desc="References",remap=false,silent=true,buffer=bufnr})
         map("n","gD",function() vim.lsp.buf.declaration() end,{desc="Goto Declaration",remap=false,silent=true,buffer=bufnr})
         map("n","gI","<cmd>Telescope lsp_implementations<cr>",{desc="Goto Implementation",remap=false,silent=true,buffer=bufnr})
-        map("n","gt","<cmd>Telescope lsp_type_definitions<cr>",{desc="Goto Type Definition",remap=false,silent=true,buffer=bufnr})
+        map("n","gy","<cmd>Telescope lsp_type_definitions<cr>",{desc="Goto Type Definition",remap=false,silent=true,buffer=bufnr})
         map("n","K",function() vim.lsp.buf.hover() end,{desc="Hover",remap=false,silent=true,buffer=bufnr})
         map("n","gK",function() vim.lsp.buf.signature_help() end,{desc="Signature Help",remap=false,silent=true,buffer=bufnr})
         map("i","<c-k>",function() vim.lsp.buf.signature_help() end,{desc="Signature Help",remap=false,silent=true,buffer=bufnr})
@@ -154,7 +154,8 @@ in {
           "n",
           "<leader>cr",
           function()
-            return ":IncRename " .. vim.fn.expand("<cword>")
+            local inc_rename = require("inc_rename")
+            return ":" .. inc_rename.config.cmd_name .. " " .. vim.fn.expand("<cword>")
           end,
           {desc="Rename",expr = true}
         )

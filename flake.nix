@@ -93,7 +93,7 @@
       flake = false;
     };
     nvim-spectre = {
-      url = github:windwp/nvim-spectre;
+      url = github:nvim-pack/nvim-spectre;
       flake = false;
     };
     telescope = {

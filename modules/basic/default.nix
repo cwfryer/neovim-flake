@@ -487,6 +487,7 @@ in {
           "startuptime",
           "tsplayground",
           "toggleterm",
+          "checkhealth",
         },
         callback = function(event)
           vim.bo[event.buf].buflisted = false

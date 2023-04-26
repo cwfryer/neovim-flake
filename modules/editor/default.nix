@@ -99,6 +99,7 @@ in {
           filesystem = {
             bind_to_cwd = false,
             follow_current_file = true,
+            use_libuv_file_watcher = true,
           },
           window = {
             width = 30,
@@ -135,6 +136,16 @@ in {
         )
         map("n", "<leader>e", "<leader>fe", { desc = "Explorer NeoTree (root dir)", remap = true })
         map("n", "<leader>E", "<leader>fE", { desc = "Explorer NeoTree (cwd)", remap = true })
+
+        -- NeoTree autocmd
+        vim.api.nvim_create_autocmd("TermClose", {
+          pattern = "*gitui",
+          callback = function()
+            if package.loaded["neo-tree.sources.git_status"] then
+              require("neo-tree.sources.git_status").refresh()
+            end
+          end,
+        })
       ''}
       ${writeIf cfg.improveSearchReplace ''
         -- Spectre find/replace setup
@@ -187,7 +198,7 @@ in {
         })
         -- Telescope keys
         map("n","<leader>,", "<cmd>Telescope buffers show_all_buffers=true<cr>", { desc = "Switch Buffer" })
-        map("n","<leader>/", function() require("telescope.builtin").live_grep() end, { desc = "Find in Files (Grep)" })
+        map("n","<leader>/", function() require("telescope.builtin").live_grep() end, { desc = "Grep (root dir)" })
         map("n","<leader>:", "<cmd>Telescope command_history<cr>", { desc = "Command History" })
         map("n","<leader><space>", function() require("telescope.builtin").fd({root}) end, { desc = "Find Files (root dir)" })
         -- Telescope find keys
@@ -195,6 +206,7 @@ in {
         map("n","<leader>ff", function() require("telescope.builtin").fd({root}) end, { desc = "Find Files (root dir)" })
         map("n","<leader>fF", function() require("telescope.builtin").fd({cwd}) end, { desc = "Find Files (cwd)" })
         map("n","<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Recent" })
+        map("n","<leader>fR", function() require("telescope.builtin").oldfiles({cwd = vim.loop.cwd()}) end, { desc = "Recent" })
         -- Telescope git keys
         map("n","<leader>gc", "<cmd>Telescope git_commits<cr>", { desc = "commits" })
         map("n","<leader>gs", "<cmd>Telescope git_status<cr>", { desc = "status" })
@@ -203,7 +215,8 @@ in {
         map("n","<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<cr>", { desc = "Buffer" })
         map("n","<leader>sc", "<cmd>Telescope command_history<cr>", { desc = "Command History" })
         map("n","<leader>sC", "<cmd>Telescope commands<cr>", { desc = "Commands" })
-        map("n","<leader>sd", "<cmd>Telescope diagnostics<cr>", { desc = "Diagnostics" })
+        map("n","<leader>sd", "<cmd>Telescope diagnostics bufnr=0<cr>", { desc = "Document Diagnostics" })
+        map("n","<leader>sD", "<cmd>Telescope diagnostics<cr>", { desc = "Workspace Diagnostics" })
         map("n","<leader>sg", function() require("telescope.builtin").live_grep({root}) end, { desc = "Grep (root dir)" })
         map("n","<leader>sG", function() require("telescope.builtin").live_grep({cwd}) end, { desc = "Grep (cwd)" })
         map("n","<leader>sh", "<cmd>Telescope help_tags<cr>", { desc = "Help Pages" })
@@ -241,7 +254,7 @@ in {
           "n",
           "<leader>sS",
           function()
-            require("telescope.builtin").lsp_workspace_symbols({
+            require("telescope.builtin").lsp_dynamic_workspace_symbols({
               symbols = {
                 "Class",
                 "Function",
@@ -333,6 +346,7 @@ in {
         map("n", "<leader>xt", "<cmd>TodoTrouble<cr>", {desc="Todo (Trouble)"})
         map("n", "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>", {desc="Todo/Fix/Fixme (Trouble)"})
         map("n", "<leader>st", "<cmd>TodoTelescope<cr>", {desc="Todo"})
+        map("n", "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>", {desc="Todo/Fix/Fixme"})
       ''}
       ${writeIf cfg.improveDiagnostics ''
         -- Better diagnostics window

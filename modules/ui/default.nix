@@ -107,6 +107,7 @@ in {
         map("n","<leader>snl", function() require("noice").cmd("last") end, { desc = "Noice Last Message"})
         map("n","<leader>snh", function() require("noice").cmd("history") end, { desc = "Noice History"})
         map("n","<leader>sna", function() require("noice").cmd("all") end, { desc = "Noice All"})
+        map("n","<leader>snd", function() require("noice").cmd("dismiss") end, { desc = "Dismiss All"})
         map({"i","n","s"},"<c-f>",function() if not require("noice").scroll(4) then return "<c-f>" end end, {silent=true,expr=true,desc="Scroll Forward"})
         map({"i","n","s"},"<c-b>",function() if not require("noice").scroll(-4) then return "<c-b>" end end, {silent=true,expr=true,desc="Scroll Backward"})
       ''}
@@ -145,6 +146,8 @@ in {
         vim.opt.termguicolors = true
         require("bufferline").setup({
           options = {
+            close_command = function(n) require("mini.bufremove").delete(n, false) end,
+            right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
             diagnostics = "nvim_lsp",
             always_show_bufferline = false,
             diagnostics_indicator = function(_,_,diag)
