@@ -180,18 +180,10 @@
     #-------------------------------------
     # Treesitter Plugins
     #-------------------------------------
-    /*
     nvim-treesitter = {
-    */
-    /*
-    url = github:nvim-treesitter/nvim-treesitter;
-    */
-    /*
-    flake = false;
-    */
-    /*
+      url = github:nvim-treesitter/nvim-treesitter;
+      flake = false;
     };
-    */
     nvim-treesitter-textobjects = {
       url = github:nvim-treesitter/nvim-treesitter-textobjects;
       flake = false;
@@ -285,7 +277,7 @@
             "self"
             "nixpkgs"
             "flake-utils"
-            "neovim-nightly-flake"
+            "neovim-nightly-overlay"
           ];
         in
           builtins.attrNames (f nonPluginInputNames inputs);
@@ -347,9 +339,6 @@
 
         packages = {
           default = default-ide.full.neovim;
-
-          # CI package
-          inherit (pkgs.neovimPlugins) nvim-treesitter;
 
           ide = default-ide.full.neovim; # my personal config
           lazy = default-ide.lazy.neovim; # default lazyvim config

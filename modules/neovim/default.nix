@@ -7,8 +7,8 @@
 with lib; {
   options.vim.neovim.package = mkOption {
     type = types.package;
-    default = pkgs.neovim-unwrapped;
-    description = "The NeoVim package to use. Default pkgs.neovim-unwrapped.";
+    default = pkgs.neovim-nightly;
+    description = "The NeoVim package to use. Default pkgs.neovim-nightly.";
     example = "pkgs.neovim-nightly";
   };
 }
