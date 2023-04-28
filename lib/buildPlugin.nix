@@ -31,6 +31,7 @@ with builtins; let
     p.tree-sitter-bash
     p.tree-sitter-regex
     p.tree-sitter-vim
+    p.tree-sitter-query
     # TODO at some point tree-sitter-help will become tree-sitter-vimdoc
   ]);
 

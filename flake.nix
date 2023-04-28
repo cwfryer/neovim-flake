@@ -2,7 +2,6 @@
   description = "Neovim Flake by Casey Fryer";
 
   inputs = {
-    #nixpkgs.url = git+file:///home/gvolpe/workspace/nixpkgs;
     nixpkgs.url = github:nixos/nixpkgs/nixos-unstable;
     flake-utils.url = github:numtide/flake-utils;
 
@@ -184,6 +183,10 @@
       url = github:nvim-treesitter/nvim-treesitter;
       flake = false;
     };
+    nvim-treesitter-playground = {
+      url = github:nvim-treesitter/playground;
+      flake = false;
+    };
     nvim-treesitter-textobjects = {
       url = github:nvim-treesitter/nvim-treesitter-textobjects;
       flake = false;
@@ -294,14 +297,6 @@
           });
         };
 
-        tsOverlay = f: p: {
-          tree-sitter-master = p.tree-sitter.buildGrammar {
-            language = "rust";
-            version = inputs.tree-sitter.rev;
-            src = inputs.tree-sitter;
-          };
-        };
-
         neovimOverlay = f: p: {
           neovim-nightly = inputs.neovim-nightly-overlay.packages.${system}.neovim;
         };
@@ -309,7 +304,7 @@
         pkgs = import nixpkgs {
           inherit system;
           config = {allowUnfree = true;};
-          overlays = [libOverlay pluginOverlay neovimOverlay tsOverlay];
+          overlays = [libOverlay pluginOverlay neovimOverlay];
         };
 
         default-ide = pkgs.callPackage ./lib/ide.nix {

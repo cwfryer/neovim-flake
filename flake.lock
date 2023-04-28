@@ -751,6 +751,22 @@
         "type": "github"
       }
     },
+    "nvim-treesitter-playground": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1681577603,
+        "narHash": "sha256-2wSTVSkuEvTAq3tB5yLw13WWpp1lAycCL4U1BKMm8Kw=",
+        "owner": "nvim-treesitter",
+        "repo": "playground",
+        "rev": "2b81a018a49f8e476341dfcb228b7b808baba68b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nvim-treesitter",
+        "repo": "playground",
+        "type": "github"
+      }
+    },
     "nvim-treesitter-textobjects": {
       "flake": false,
       "locked": {
@@ -892,6 +908,7 @@
         "nvim-spectre": "nvim-spectre",
         "nvim-transparent": "nvim-transparent",
         "nvim-treesitter": "nvim-treesitter",
+        "nvim-treesitter-playground": "nvim-treesitter-playground",
         "nvim-treesitter-textobjects": "nvim-treesitter-textobjects",
         "nvim-ts-commentstring": "nvim-ts-commentstring",
         "nvim-web-devicons": "nvim-web-devicons",

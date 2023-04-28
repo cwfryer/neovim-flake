@@ -116,11 +116,11 @@ in {
       ''}
       ${writeIf cfg.snippets.enable ''
         -- Luasnip config
-          require'luasnip'.setup({
-            history = true,
-            delete_check_events = "TextChanged",
-          })
-          ${writeIf cfg.snippets.useFriendlySnippets ''
+        require'luasnip'.setup({
+          history = true,
+          delete_check_events = "TextChanged",
+        })
+        ${writeIf cfg.snippets.useFriendlySnippets ''
           require("luasnip.loaders.from_vscode").lazy_load()
         ''}
         ${writeIf (!cfg.completion.useSuperTab) ''
@@ -135,7 +135,6 @@ in {
           )
           map("s","<tab>", function() require("luasnip").jump(1) end)
           map({"i","s"},"<s-tab>", function() require("luasnip").jump(-1) end)
-
         ''}
       ''}
       ${writeIf cfg.completion.enable ''
@@ -209,10 +208,10 @@ in {
           },
         })
       ''}
-        ${writeIf cfg.helpers.autoPair ''
+      ${writeIf cfg.helpers.autoPair ''
         require("mini.pairs").setup()
       ''}
-        ${writeIf cfg.helpers.surround ''
+      ${writeIf cfg.helpers.surround ''
         require("mini.surround").setup({
           mappings = {
             add = "gza",
@@ -225,7 +224,7 @@ in {
           };
         })
       ''}
-        ${writeIf cfg.helpers.comment.enable ''
+      ${writeIf cfg.helpers.comment.enable ''
         require("mini.comment").setup({
           ${writeIf cfg.helpers.comment.useTreeSitterContext ''
           hooks = {
@@ -236,7 +235,7 @@ in {
         ''}
         })
       ''}
-        ${writeIf cfg.helpers.betterAISelection ''
+      ${writeIf cfg.helpers.betterAISelection ''
         -- mini.ai config
         require("mini.ai").setup({
           n_lines = 500,

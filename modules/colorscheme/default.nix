@@ -21,11 +21,7 @@ in {
     };
   };
   config = {
-    vim.startPlugins = with pkgs.neovimPlugins;
-      (withPlugins (cfg.set == "catppuccin") [catppuccin])
-      ++ (withPlugins (cfg.set == "tokyonight") [tokyonight])
-      ++ (withPlugins (cfg.set == "oceanicnext") [oceanicnext])
-      ++ (withPlugins cfg.transparent [nvim-transparent]);
+    vim.startPlugins = with pkgs.neovimPlugins; [catppuccin tokyonight oceanicnext nvim-transparent];
 
     vim.configRC = ''
       set background=dark
@@ -41,10 +37,8 @@ in {
     '';
 
     vim.luaConfigRC = ''
-      ${writeIf cfg.transparent ''
-        -- Enable transparency
-        require('transparent').setup()
-      ''}
+      -- Enable transparency plugin
+      require('transparent').setup()
       map("n", "<leader>ut", "<cmd>TransparentToggle<cr>", { desc = "Toggle Transparency" })
     '';
   };

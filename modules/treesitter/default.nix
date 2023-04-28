@@ -22,14 +22,14 @@ in {
   };
   config = mkIf cfg.enable {
     vim.startPlugins = with pkgs.neovimPlugins;
-      [treeSitterPlug]
+      [treeSitterPlug nvim-treesitter-playground]
       ++ (withPlugins cfg.textobjects [nvim-treesitter-textobjects]);
 
     vim.luaConfigRC = ''
       -- ---------------------------------------
       -- Treesitter config
       -- ---------------------------------------
-        require'nvim-treesitter'.setup {
+        require'nvim-treesitter.configs'.setup {
           highlight = {
             enable = true,
           },
@@ -45,6 +45,24 @@ in {
               scope_incremental = "<nop>",
               node_decremental = "<bs>",
             }
+          },
+          playground = {
+            enable = true,
+            disable = {},
+            updatetime = 25,
+            persist_queries = false,
+            keybindings = {
+              toggle_query_editor = 'o',
+              toggle_hl_groups = 'i',
+              toggle_injected_languages = 't',
+              toggle_anonymous_nodes = 'a',
+              toggle_language_display = 'I',
+              focus_language = 'f',
+              unfocus_language = 'F',
+              update = 'R',
+              goto_node = '<cr>',
+              show_help = '?',
+            },
           },
           ${writeIf cfg.textobjects ''
         textobjects = {
