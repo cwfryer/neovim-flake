@@ -252,13 +252,18 @@ in {
           },
           server = {
             capabilities = capabilities,
-            on_attach = default_on_attach,
+            on_attach = function(client,bufnr)
+              default_on_attach(client, bufnr)
+              vim.keymap.set("n", "<C-space>", require("rust-tools").hover_actions.hover_actions, { buffer = bufnr })
+              vim.keymap.set("n", "<Leader>ch", require("rust-tools").hover_range.hover_range, { buffer = bufnr })
+            end,
             cmd = {"${pkgs.rust-analyzer}/bin/rust-analyzer"},
             settings = {
               ["rust-analyzer"] = {
                 experimental = {
                   procAttrMacros = true,
                 },
+                lru.capacity = 64, -- decrease memory usage
               },
             }
           }
