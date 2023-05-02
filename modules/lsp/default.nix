@@ -231,7 +231,7 @@ in {
           })
         ''}
           },
-          on_attach = default_on_attach
+          on_attach = default_on_attach,
         })
       ''}
 
@@ -263,7 +263,7 @@ in {
                 experimental = {
                   procAttrMacros = true,
                 },
-                lru.capacity = 64, -- decrease memory usage
+                lru = {capacity = 64}, -- decrease memory usage
               },
             }
           }
