@@ -225,11 +225,15 @@ in {
             null_ls.builtins.formatting.black.with({
               command = "${pkgs.black}/bin/black";
             }),
+            ${writeIf cfg.languages.rust ''
+          null_ls.builtins.formatting.rustfmt,
+        ''}
             ${writeIf cfg.languages.nix ''
           null_ls.builtins.formatting.alejandra.with({
             command = "${pkgs.alejandra}/bin/alejandra";
-          })
+          }),
         ''}
+
           },
           on_attach = default_on_attach,
         })
