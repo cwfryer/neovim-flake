@@ -267,7 +267,7 @@ in {
                 experimental = {
                   procAttrMacros = true,
                 },
-                lru = {capacity = 64}, -- decrease memory usage
+                lru = {capacity = 32}, -- decrease memory usage
               },
             }
           }
