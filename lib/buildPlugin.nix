@@ -32,7 +32,6 @@ with builtins; let
     p.tree-sitter-regex
     p.tree-sitter-vim
     p.tree-sitter-query
-    p.tree-sitter-sql
     # TODO at some point tree-sitter-help will become tree-sitter-vimdoc
   ]);
 
