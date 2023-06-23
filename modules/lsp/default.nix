@@ -366,7 +366,7 @@ in {
           on_attach = function(client, bufnr)
             attach_keymaps(client, bufnr)
           end,
-          cmd = { "${pkgs.nodePackages.vscode-html-languageserver-bin}/bin/html-language-server-bin", "--stdio" }
+          cmd = { "${pkgs.nodePackages.vscode-html-languageserver-bin}/bin/html-languageserver", "--stdio" }
         }
       ''}
     '';
