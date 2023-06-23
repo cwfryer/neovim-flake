@@ -358,10 +358,10 @@ in {
       ''}
 
       ${writeIf cfg.languages.html ''
-        -- Vimscript config
+        -- HTML config
         local html_caps = capabilities
         html_caps.textDocument.completion.completionItem.snippetSupport = true
-        lspconfig.vimls.setup{
+        lspconfig.html.setup{
           capabilities = html_caps;
           on_attach = function(client, bufnr)
             attach_keymaps(client, bufnr)
