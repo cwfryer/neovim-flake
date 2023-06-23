@@ -68,6 +68,11 @@ in {
         default = false;
         description = "Enable vimscript LSP Server";
       };
+      html = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Enable html LSP Server";
+      };
     };
   };
   config = mkIf cfg.enable {
@@ -341,7 +346,7 @@ in {
         }
       ''}
 
-        ${writeIf cfg.languages.vimscript ''
+      ${writeIf cfg.languages.vimscript ''
         -- Vimscript config
         lspconfig.vimls.setup{
           capabilities = capabilities;
@@ -349,6 +354,19 @@ in {
             attach_keymaps(client, bufnr)
           end,
           cmd = { "${pkgs.nodePackages.vim-language-server}/bin/vim-language-server", "--stdio" }
+        }
+      ''}
+
+      ${writeIf cfg.languages.html ''
+        -- Vimscript config
+        local html_caps = capabilities
+        html_caps.textDocument.completion.completionItem.snippetSupport = true
+        lspconfig.vimls.setup{
+          capabilities = html_caps;
+          on_attach = function(client, bufnr)
+            attach_keymaps(client, bufnr)
+          end,
+          cmd = { "${pkgs.nodePackages.vscode-html-languageserver-bin}/bin/html-language-server-bin", "--stdio" }
         }
       ''}
     '';
