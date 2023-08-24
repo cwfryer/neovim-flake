@@ -385,7 +385,7 @@ in {
           on_attach = function(client, bufnr)
             attach_keymaps(client, bufnr)
           end,
-          cmd = { "${pkgs.ocamlPackages.ocaml-lsp}/bin/ocamllsp", "--stdio" }
+          cmd = { "${pkgs.ocamlPackages.ocaml-lsp}/bin/ocamllsp" }
         }
       ''}
     '';
