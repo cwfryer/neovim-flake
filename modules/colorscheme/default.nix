@@ -10,9 +10,9 @@ with builtins; let
 in {
   options.vim.colorscheme = {
     set = mkOption {
-      type = types.enum ["catppuccin" "tokyonight" "oceanicnext"];
-      default = "oceanicnext";
-      description = "Choose colorscheme (catppuccin, tokyonight, oceanicnext)";
+      type = types.enum ["catppuccin" "tokyonight" "oceanicnext" "gruvbox"];
+      default = "gruvbox";
+      description = "Choose colorscheme (catppuccin, tokyonight, oceanicnext, gruvbox)";
     };
     transparent = mkOption {
       type = types.bool;
@@ -33,6 +33,9 @@ in {
       ''}
       ${writeIf (cfg.set == "catppuccin") ''
         colorscheme catppuccin-macchiato
+      ''}
+      ${writeIf (cfg.set == "gruvbox") ''
+        colorscheme gruvbox
       ''}
     '';
 
