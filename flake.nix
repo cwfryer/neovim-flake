@@ -74,6 +74,10 @@
       url = github:catppuccin/nvim;
       flake = false;
     };
+    gruvbox = {
+      url = github:ellisonleao/gruvbox.nvim;
+      flake = false;
+    };
     oceanicnext = {
       url = github:mhartington/oceanic-next;
       flake = false;
