@@ -21,7 +21,7 @@ in {
     };
   };
   config = {
-    vim.startPlugins = with pkgs.neovimPlugins; [catppuccin tokyonight oceanicnext nvim-transparent];
+    vim.startPlugins = with pkgs.neovimPlugins; [catppuccin tokyonight oceanicnext gruvbox nvim-transparent];
 
     vim.configRC = ''
       set background=dark
