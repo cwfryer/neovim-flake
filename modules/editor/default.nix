@@ -98,7 +98,7 @@ in {
         require("neo-tree").setup({
           filesystem = {
             bind_to_cwd = false,
-            follow_current_file = true,
+            follow_current_file.enabled,
             use_libuv_file_watcher = true,
           },
           window = {
