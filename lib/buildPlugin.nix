@@ -34,6 +34,7 @@ with builtins; let
     p.tree-sitter-query
     p.tree-sitter-ocaml
     p.tree-sitter-ocaml-interface
+    p.tree-sitter-svelte
     # TODO at some point tree-sitter-help will become tree-sitter-vimdoc
   ]);
 
