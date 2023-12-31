@@ -53,6 +53,11 @@ in {
         default = false;
         description = "Enable go LSP Server";
       };
+      ocaml = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Enable OCaml LSP server";
+      };
       python = mkOption {
         type = types.bool;
         default = false;
@@ -238,6 +243,9 @@ in {
             command = "${pkgs.alejandra}/bin/alejandra";
           }),
         ''}
+            ${writeIf cfg.languages.ocaml ''
+          null_ls.builtins.formatting.ocamlformat,
+        ''}
 
           },
           on_attach = default_on_attach,
@@ -370,6 +378,16 @@ in {
         }
       ''}
 
+      ${writeIf cfg.languages.ocaml ''
+        -- OCaml config
+        lspconfig.ocamllsp.setup{
+          capabilities = capabilities;
+          on_attach = function(client, bufnr)
+            attach_keymaps(client, bufnr)
+          end,
+          cmd = { "${pkgs.ocamlPackages.ocaml-lsp}/bin/ocamllsp" }
+        }
+      ''}
     '';
   };
 }
