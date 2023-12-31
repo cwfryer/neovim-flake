@@ -7,7 +7,7 @@
 }: final: prev:
 with lib;
 with builtins; let
-  inherit (prev.vimUtils) buildVimPluginFrom2Nix;
+  inherit (prev.vimUtils) buildVimPlugin;
 
   treeSitterPlug = pkgs.vimPlugins.nvim-treesitter.withPlugins (p: [
     p.tree-sitter-c
