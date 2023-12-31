@@ -38,7 +38,7 @@ with builtins; let
   ]);
 
   buildPlug = name:
-    buildVimPluginFrom2Nix {
+    buildVimPlugin {
       pname = name;
       version = "master";
       src = builtins.getAttr name inputs;
