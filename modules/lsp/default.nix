@@ -384,6 +384,14 @@ in {
           end,
           cmd = { "${pkgs.nodePackages.vscode-html-languageserver-bin}/bin/html-languageserver", "--stdio" }
         }
+
+        lspconfig.tailwindcss.setup{
+          capabilities = html_caps;
+          on_attach = function(client, bufnr)
+            attach_keymaps(client, bufnr)
+          end,
+          cmd = { "${pkgs.tailwindcss-language-server}/bin/tailwindcss-language-server", "--stdio" }
+        }
       ''}
 
       ${writeIf cfg.languages.ocaml ''
