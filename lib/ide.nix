@@ -1,6 +1,9 @@
-{ pkgs, lib, neovimBuilder, ... }:
-
-let
+{
+  pkgs,
+  lib,
+  neovimBuilder,
+  ...
+}: let
   deepMerge = lib.attrsets.recursiveUpdate;
 
   cfg = {
@@ -68,9 +71,10 @@ let
           nix = true;
           rust = true;
           # Uncomment to enable
-          # go = true;
-          # pyton = true;
-          # typescript = true;
+          go = true;
+          python = true;
+          typescript = true;
+          html = true;
         };
       };
       treesitter = {
@@ -104,8 +108,7 @@ let
   nightly = {
     vim.neovim.package = pkgs.neovim-nightly;
   };
-in
-{
+in {
   lazy = neovimBuilder {
     config = deepMerge cfg nightly;
   };
@@ -113,5 +116,4 @@ in
   full = neovimBuilder {
     config = deepMerge cfg nightly;
   };
-
 }
