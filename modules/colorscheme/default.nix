@@ -10,7 +10,7 @@ with builtins; let
 in {
   options.vim.colorscheme = {
     set = mkOption {
-      type = types.enum ["catppuccin" "tokyonight" "oceanicnext"];
+      type = types.enum ["catppuccin" "tokyonight" "oceanicnext" "gruvbox"];
       default = "oceanicnext";
       description = "Choose colorscheme (catppuccin, tokyonight, oceanicnext)";
     };
@@ -21,7 +21,7 @@ in {
     };
   };
   config = {
-    vim.startPlugins = with pkgs.neovimPlugins; [catppuccin tokyonight oceanicnext nvim-transparent];
+    vim.startPlugins = with pkgs.neovimPlugins; [catppuccin tokyonight oceanicnext gruvbox nvim-transparent];
 
     vim.configRC = ''
       set background=dark
@@ -33,6 +33,9 @@ in {
       ''}
       ${writeIf (cfg.set == "catppuccin") ''
         colorscheme catppuccin-macchiato
+      ''}
+      ${writeIf (cfg.set == "gruvbox") ''
+        colorscheme gruvbox
       ''}
     '';
 

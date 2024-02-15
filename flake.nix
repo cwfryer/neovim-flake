@@ -78,6 +78,10 @@
       url = github:mhartington/oceanic-next;
       flake = false;
     };
+    gruvbox = {
+      url = github:ellisonleao/gruvbox.nvim;
+      flake = false;
+    };
     nvim-transparent = {
       url = github:xiyaowong/nvim-transparent;
       flake = false;
