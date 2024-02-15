@@ -33,50 +33,118 @@ in {
     };
 
     languages = {
-      lua = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Enable Lua LSP Server";
+      lua = {
+        enable = mkOption {
+          type = types.bool;
+          default = true;
+          description = "Enable Lua LSP Server";
+        };
+        embedLSP = mkOption {
+          type = types.bool;
+          default = true;
+          description = "Embed LSP server directly from Nixpkgs";
+        };
       };
-      nix = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Enable nix LSP Server";
+      nix = {
+        enable = mkOption {
+          type = types.bool;
+          default = true;
+          description = "Enable nix LSP Server";
+        };
+        embedLSP = mkOption {
+          type = types.bool;
+          default = true;
+          description = "Embed LSP server directly from Nixpkgs";
+        };
       };
-      rust = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Enable rust LSP Server";
+      rust = {
+        enable = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Enable rust LSP Server";
+        };
+        embedLSP = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Embed LSP server directly from Nixpkgs";
+        };
       };
-      go = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Enable go LSP Server";
+      go = {
+        enable = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Enable go LSP Server";
+        };
+        embedLSP = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Embed LSP server directly from Nixpkgs";
+        };
       };
-      ocaml = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Enable OCaml LSP server";
+      ocaml = {
+        enable = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Enable OCaml LSP server";
+        };
+        embedLSP = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Embed LSP server directly from Nixpkgs";
+        };
       };
-      python = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Enable python LSP Server";
+      python = {
+        enable = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Enable python LSP Server";
+        };
+        embedLSP = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Embed LSP server directly from Nixpkgs";
+        };
       };
-      typescript = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Enable typescript LSP Server";
+      typescript = {
+        enable = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Enable typescript LSP Server";
+        };
+        flavor = mkOption {
+          type = types.enum ["none" "svelte"];
+          default = "none";
+          description = "Additional flavor of typescript";
+        };
+        embedLSP = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Embed LSP server directly from Nixpkgs";
+        };
       };
-      vimscript = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Enable vimscript LSP Server";
+      vimscript = {
+        enable = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Enable vimscript LSP Server";
+        };
+        embedLSP = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Embed LSP server directly from Nixpkgs";
+        };
       };
-      html = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Enable html LSP Server";
+      html = {
+        enable = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Enable html LSP Server";
+        };
+        embedLSP = mkOption {
+          type = types.bool;
+          default = false;
+          description = "Embed LSP server directly from Nixpkgs";
+        };
       };
     };
   };
@@ -235,15 +303,15 @@ in {
             null_ls.builtins.formatting.black.with({
               command = "${pkgs.black}/bin/black";
             }),
-            ${writeIf cfg.languages.rust ''
+            ${writeIf cfg.languages.rust.enable ''
           null_ls.builtins.formatting.rustfmt,
         ''}
-            ${writeIf cfg.languages.nix ''
+            ${writeIf cfg.languages.nix.enable ''
           null_ls.builtins.formatting.alejandra.with({
             command = "${pkgs.alejandra}/bin/alejandra";
           }),
         ''}
-            ${writeIf cfg.languages.ocaml ''
+            ${writeIf cfg.languages.ocaml.enable ''
           null_ls.builtins.formatting.ocamlformat,
         ''}
 
@@ -257,7 +325,7 @@ in {
 
       local capabilities = vim.lsp.protocol.make_client_capabilities()
 
-        ${writeIf cfg.languages.rust ''
+        ${writeIf cfg.languages.rust.enable ''
         -- Rust config
         local rustopts = {
           tools = {
@@ -274,7 +342,7 @@ in {
               vim.keymap.set("n", "<C-space>", require("rust-tools").hover_actions.hover_actions, { buffer = bufnr })
               vim.keymap.set("n", "<Leader>ch", require("rust-tools").hover_range.hover_range, { buffer = bufnr })
             end,
-            cmd = {"${pkgs.rust-analyzer}/bin/rust-analyzer"},
+            ${writeIf cfg.languages.rust.embedLSP ''cmd = {"${pkgs.rust-analyzer}/bin/rust-analyzer"},''}
             settings = {
               ["rust-analyzer"] = {
                 experimental = {
@@ -295,12 +363,12 @@ in {
         require('rust-tools').setup(rustopts)
       ''}
 
-        ${writeIf cfg.languages.python ''
+        ${writeIf cfg.languages.python.enable ''
         -- Python config
         lspconfig.pyright.setup{
           capabilities = capabilities;
           on_attach = default_on_attach;
-          cmd = {"${pkgs.nodePackages.pyright}/bin/pyright-langserver", "--stdio"},
+          ${writeIf cfg.languages.python.embedLSP ''cmd = {"${pkgs.nodePackages.pyright}/bin/pyright-langserver", "--stdio"},''}
         }
       ''}
 
@@ -319,61 +387,63 @@ in {
           };
           capabilities = capabilities;
           on_attach = default_on_attach;
-          cmd = {"${pkgs.sumneko-lua-language-server}/bin/lua-language-server"},
+          ${writeIf cfg.languages.lua.embedLSP ''cmd = {"${pkgs.sumneko-lua-language-server}/bin/lua-language-server"},''}
         }
       ''}
 
-        ${writeIf cfg.languages.nix ''
+        ${writeIf cfg.languages.nix.enable ''
         -- Nix config
         lspconfig.rnix.setup{
           capabilities = capabilities;
           on_attach = function(client, bufnr)
             attach_keymaps(client, bufnr)
           end,
-          cmd = {"${pkgs.rnix-lsp}/bin/rnix-lsp"},
+          ${writeIf cfg.languagegs.nix.embedLSP ''cmd = {"${pkgs.rnix-lsp}/bin/rnix-lsp"},''}
         }
       ''}
 
-        ${writeIf cfg.languages.go ''
+        ${writeIf cfg.languages.go.enable ''
         -- Go config
         lspconfig.gopls.setup{
           capabilities = capabilities;
           on_attach = default_on_attach;
-          cmd = {"${pkgs.gopls}/bin/gopls", "serve"},
+          ${writeIf cfg.languages.go.embedLSP ''cmd = {"${pkgs.gopls}/bin/gopls", "serve"},''}
         }
       ''}
 
-        ${writeIf cfg.languages.typescript ''
+        ${writeIf cfg.languages.typescript.enable ''
         -- Typescript config
         lspconfig.tsserver.setup{
           capabilities = capabilities;
           on_attach = function(client, bufnr)
             attach_keymaps(client, bufnr)
           end,
-          cmd = { "${pkgs.nodePackages.typescript-language-server}/bin/typescript-language-server", "--stdio" }
+          ${writeIf cfg.languages.typescript.embedLSP ''cmd = { "${pkgs.nodePackages.typescript-language-server}/bin/typescript-language-server", "--stdio" }''}
         }
 
-        lspconfig.svelte.setup{
-          capabilities = capabilities;
-          on_attach = function(client, bufnr)
-            attach_keymaps(client, bufnr)
-          end,
-          cmd = { "${pkgs.nodePackages.svelte-language-server}/bin/svelteserver", "--stdio" }
-        }
+        ${writeIf (cfg.languages.typescript.flavor == "svelte") ''
+            lspconfig.svelte.setup{
+            capabilities = capabilities;
+            on_attach = function(client, bufnr)
+              attach_keymaps(client, bufnr)
+            end,
+            ${writeIf cfg.languages.typescript.embedLSP ''cmd = { "${pkgs.nodePackages.svelte-language-server}/bin/svelteserver", "--stdio" }''}
+          }
+        ''}
       ''}
 
-      ${writeIf cfg.languages.vimscript ''
+      ${writeIf cfg.languages.vimscript.enable ''
         -- Vimscript config
         lspconfig.vimls.setup{
           capabilities = capabilities;
           on_attach = function(client, bufnr)
             attach_keymaps(client, bufnr)
           end,
-          cmd = { "${pkgs.nodePackages.vim-language-server}/bin/vim-language-server", "--stdio" }
+          ${writeIf cfg.languages.vimscript.embedLSP ''cmd = { "${pkgs.nodePackages.vim-language-server}/bin/vim-language-server", "--stdio" }''}
         }
       ''}
 
-      ${writeIf cfg.languages.html ''
+      ${writeIf cfg.languages.html.enable ''
         -- HTML config
         local html_caps = capabilities
         html_caps.textDocument.completion.completionItem.snippetSupport = true
@@ -382,7 +452,7 @@ in {
           on_attach = function(client, bufnr)
             attach_keymaps(client, bufnr)
           end,
-          cmd = { "${pkgs.nodePackages.vscode-html-languageserver-bin}/bin/html-languageserver", "--stdio" }
+          ${writeIf cfg.langauges.html.embedLSP ''cmd = { "${pkgs.nodePackages.vscode-html-languageserver-bin}/bin/html-languageserver", "--stdio" }''}
         }
 
         lspconfig.tailwindcss.setup{
@@ -390,18 +460,18 @@ in {
           on_attach = function(client, bufnr)
             attach_keymaps(client, bufnr)
           end,
-          cmd = { "${pkgs.tailwindcss-language-server}/bin/tailwindcss-language-server", "--stdio" }
+          ${writeIf cfg.langauges.html.embedLSP ''cmd = { "${pkgs.tailwindcss-language-server}/bin/tailwindcss-language-server", "--stdio" }''}
         }
       ''}
 
-      ${writeIf cfg.languages.ocaml ''
+      ${writeIf cfg.languages.ocaml.enable ''
         -- OCaml config
         lspconfig.ocamllsp.setup{
           capabilities = capabilities;
           on_attach = function(client, bufnr)
             attach_keymaps(client, bufnr)
           end,
-          cmd = { "${pkgs.ocamlPackages.ocaml-lsp}/bin/ocamllsp" }
+          ${writeIf cfg.languages.ocaml.embedLSP ''cmd = { "${pkgs.ocamlPackages.ocaml-lsp}/bin/ocamllsp" }''}
         }
       ''}
     '';

@@ -67,14 +67,21 @@
         };
         autoFormatting = true;
         languages = {
-          lua = true;
-          nix = true;
-          rust = true;
+          lua.enable = true;
+          lua.embedLSP = true;
+          nix.enable = true;
+          nix.embedLSP = true;
+          rust.enable = true;
+          rust.embedLSP = true;
           # Uncomment to enable
-          go = true;
-          python = true;
-          typescript = true;
-          html = true;
+          go.enable = true;
+          go.embedLSP = true;
+          python.enable = true;
+          python.embedLSP = true;
+          typescript.enable = true;
+          typescript.embedLSP = true;
+          html.enable = true;
+          html.embedLSP = true;
         };
       };
       treesitter = {
