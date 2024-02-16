@@ -372,7 +372,7 @@ in {
         }
       ''}
 
-        ${writeIf cfg.languages.lua ''
+        ${writeIf cfg.languages.lua.enable ''
         -- Lua config
         lspconfig.lua_ls.setup{
           settings = {
@@ -398,7 +398,7 @@ in {
           on_attach = function(client, bufnr)
             attach_keymaps(client, bufnr)
           end,
-          ${writeIf cfg.languagegs.nix.embedLSP ''cmd = {"${pkgs.rnix-lsp}/bin/rnix-lsp"},''}
+          ${writeIf cfg.languages.nix.embedLSP ''cmd = {"${pkgs.rnix-lsp}/bin/rnix-lsp"},''}
         }
       ''}
 
@@ -452,7 +452,7 @@ in {
           on_attach = function(client, bufnr)
             attach_keymaps(client, bufnr)
           end,
-          ${writeIf cfg.langauges.html.embedLSP ''cmd = { "${pkgs.nodePackages.vscode-html-languageserver-bin}/bin/html-languageserver", "--stdio" }''}
+          ${writeIf cfg.languages.html.embedLSP ''cmd = { "${pkgs.nodePackages.vscode-html-languageserver-bin}/bin/html-languageserver", "--stdio" }''}
         }
 
         lspconfig.tailwindcss.setup{
@@ -460,7 +460,7 @@ in {
           on_attach = function(client, bufnr)
             attach_keymaps(client, bufnr)
           end,
-          ${writeIf cfg.langauges.html.embedLSP ''cmd = { "${pkgs.tailwindcss-language-server}/bin/tailwindcss-language-server", "--stdio" }''}
+          ${writeIf cfg.languages.html.embedLSP ''cmd = { "${pkgs.tailwindcss-language-server}/bin/tailwindcss-language-server", "--stdio" }''}
         }
       ''}
 
