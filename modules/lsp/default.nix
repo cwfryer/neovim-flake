@@ -153,7 +153,7 @@ in {
       [nvim-lspconfig null-ls inc-rename]
       ++ (withPlugins cfg.extras.neoconf [neoconf])
       ++ (withPlugins cfg.extras.neodev [neodev])
-      ++ (withPlugins cfg.languages.rust [crates-nvim rust-tools]);
+      ++ (withPlugins cfg.languages.rust.enable [crates-nvim rust-tools]);
 
     vim.luaConfigRC = ''
       -- ---------------------------------------
