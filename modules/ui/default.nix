@@ -135,11 +135,11 @@ in {
         require('nvim-web-devicons').setup()
       ''}
       ${writeIf cfg.uiTweaks.indents ''
-        require("indent_blankline").setup({
-          char = "│",
-          filetype_exclude = {"help", "alpha", "dashboard", "neo-tree", "trouble"},
-          show_trailing_blankline_indent = false,
-          show_current_context = false,
+        require("ibl").setup({
+          indent = {char = "│", smart_indent_cap = true},
+          whitespace = {remove_blankline_trail = true},
+          scope = {enabled = false},
+          exclude = {filetypes = {"help", "alpha", "dashboard", "neo-tree", "trouble"}},
         })
       ''}
       ${writeIf cfg.uiAdditions.bufferline ''
